@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=./projects-schema.json
+
+
+- name: Gyselalib++
+  description: Gyselalib++ is a collection of C++ components for writing gyrokinetic semi-lagrangian codes.
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/gysela.scm
+  documentation: https://gyselax.github.io/gyselalibxx/
+  discussion: https://github.com/gyselax/gyselalibxx/issues
+
+- name: Feel++
+  description: |
+    Feel++ is an Open-Source C++ library which allows to solve a large range of partial
+    differential equations using Galerkin methods, e.g. finite element method, spectral
+    element method, discontinuous Galerkin methods or reduced basis methods. Feel++ enables
+    parallel computing in a seamless way and allows to solve large scale systems up to tens
+    of thousands of cores.
+  spack_package: https://github.com/numpex/spack.numpex/blob/main/packages/feelpp/package.py
+  documentation: https://docs.feelpp.org/home/index.html
+  discussion: https://join.slack.com/t/feelpp/shared_invite/zt-2qe0q9hw-4pVbhohCXUE6Po9Ma8dbiQ
+
+- name: BigDFT
+  description: |
+    BigDFT is a free software package, whose main program allows the total energy, charge density,
+    and electronic structure of systems made of electrons and nuclei (molecules and periodic/crystalline
+    solids) to be calculated within density functional theory (DFT), using pseudopotentials, and a
+    wavelet basis.
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/chemistry.scm
+  spack_package: https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/bigdft-suite/package.py
+  documentation: https://l_sim.gitlab.io/bigdft-suite/index.html
+  discussion: https://bigdft.org/index.html%3Fp=41.html
+
+- name: Chameleon
+  description: |
+    Chameleon is a dense linear algebra solver relying on sequential task-based algorithms where
+    sub-tasks of the overall algorithms are submitted to a run-time system. Such a system is a layer
+    between the application and the hardware which handles the scheduling and the effective execution
+    of tasks on the processing units. A run-time system such as StarPU is able to manage automatically
+    data transfers between not shared memory area (CPUs-GPUs, distributed nodes).
+  documentation: https://solverstack.gitlabpages.inria.fr/chameleon/
+  discussion: https://gitlab.inria.fr/solverstack/chameleon/-/issues
+  spack_package: https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/chameleon/package.py
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm
+
+- name: PDI
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/pdi.scm
+  spack_package: https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/pdi/package.py
+  documentation: https://pdi.dev/main/
+  discussion: https://join.slack.pdi.dev/
+  description: |
+    PDI supports loose coupling of simulation codes with data handling
+    the simulation code is annotated in a library-agnostic way,
+    libraries are used from the specification tree.
+
+- name: Melissa
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/melissa.scm
+  spack_package: https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/melissa/package.py
+  documentation: https://melissa.gitlabpages.inria.fr/melissa/
+  discussion: https://melissa.discourse.group/
+  description: |
+    Melissa is a file-avoiding, adaptive, fault-tolerant and elastic
+    framework, to run large-scale sensitivity analysis or deep-surrogate
+    training on supercomputers.
+
+- name: FreeFEM++
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/math.scm
+  spack_package: https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/freefem/package.py
+  documentation: https://doc.freefem.org/introduction/index.html
+  discussion: https://community.freefem.org/
+  description: |
+    FreeFEM is a popular 2D and 3D partial differential equations (PDE) solver.
+    It allows you to easily implement your own physics modules using the provided
+    FreeFEM language. FreeFEM offers a large list of finite elements, like the
+    Lagrange, Taylor-Hood, etc., usable in the continuous and discontinuous
+    Galerkin method framework.
+
+- name: StarPU
+  description: |
+    StarPU is a task-based runtime system for heterogeneous platforms
+    coupling a performance modeling scheduler with a distributed
+    shared-memory manager. It provides a framework for task scheduling
+    on heterogeneous, accelerated platforms, together with an API for
+    implementing various classes of scheduling algorithms. This
+    scheduling framework jointly works with a distributed shared-memory
+    manager to optimize task mappings and data transfers, and to overlap
+    communications with computations.
+  documentation: https://starpu.gitlabpages.inria.fr/
+  discussion: https://gitlab.inria.fr/starpu/starpu/-/issues
+  spack_package: https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/starpu/package.py
+  guix_package: https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/storm.scm
+

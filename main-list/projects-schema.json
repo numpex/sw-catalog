@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "items": {
+    "properties": {
+      "description": {
+        "description": "A detailed description of the project.",
+        "type": "string"
+      },
+      "discussion": {
+        "description": "A URL or reference to project discussions.",
+        "type": "string"
+      },
+      "documentation": {
+        "description": "A URL or reference to the project documentation.",
+        "type": "string"
+      },
+      "guix_package": {
+        "description": "Information about the Guix package.",
+        "type": "string"
+      },
+      "name": {
+        "description": "The name of the project.",
+        "type": "string"
+      },
+      "spack_package": {
+        "description": "A URL to the Spack package.",
+        "format": "uri",
+        "type": "string"
+      }
+    },
+    "required": [
+      "name",
+      "description"
+    ],
+    "type": "object"
+  },
+  "type": "array"
+}
