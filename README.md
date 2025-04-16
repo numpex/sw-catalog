@@ -1,4 +1,4 @@
-# NumPeX Software Catalog
+# NumPEx Software Catalog
 
 > [!WARNING]  
 > Repo under construction - not operational yet.
