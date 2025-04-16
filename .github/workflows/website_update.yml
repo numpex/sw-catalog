@@ -28,7 +28,7 @@ jobs:
         with:
           url: https://gitlab.inria.fr
           project_id: 51628
-          token: glptt-69dad409e73238291f11f467ce8f8d4b2a5baccd
+          token: ${{ secrets.GITLAB_EXADI_TOKEN }}
           ref_name: main
       
       # Runs a single command using the runners shell
