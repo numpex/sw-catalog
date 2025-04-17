@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+
+      - name: ❄️ Install Nix
+        uses: cachix/install-nix-action@v31
+
+      - name: ✅ Check schema
+        run: |
+          nix run nixpkgs#check-jsonschema -- \
+            --schemafile ./main-list/projects-schema.json ./main-list/projects.json
+
