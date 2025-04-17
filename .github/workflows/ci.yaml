@@ -1,8 +1,10 @@
 name: ci
 
 on:
-  push:
-  pull_request:
+  push: &config
+    paths:
+      - "**/*.json"
+  pull_request: *config
   workflow_dispatch:
 
 jobs:
