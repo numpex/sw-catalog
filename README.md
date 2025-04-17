@@ -3,6 +3,8 @@
 > [!WARNING]  
 > Repo under construction - not operational yet.
 
+Edit file in my fork 
+
 This repo centralizes the list of projects following the [NumPEx Software Integration guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html).
 
 Human-readable version of the catalog is available on this [website](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/index.html).
