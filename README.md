@@ -25,10 +25,10 @@ Human-readable version of the catalog is available on this [website](https://num
 
 ## Information for Maintainers
 
-Workflow named `ci`  and will validate the JSON file to be proper JSON, and check for missing fields. It is triggered for each pull request, and for each commit/ direct push in the repo. 
+The website generates a human-readable of the SW catalog by dynamically parsing the latest commit for the `projects.json` file in the `main` branch. Please be aware that an incorrect JSON file in the `main` branch may cause erroneous rendering or even undefined behaviour (e.g. webbrowser crash) when users access the catalog page on the website.
 
-Please be aware that an incorrect JSON file in the `main` branch may cause erroneous rendering or even undefined behaviour when the catalog is displayed on the website.
-**Make sure to fix the JSON file asap** if the CI worklows fails after a commit on the `main` branch.
+Workflow named `ci`  aims to validate the JSON file to be proper JSON, and to check for missing fields. It is triggered for each pull request, and for each commit/ direct push in the repo. **Make sure to fix the JSON file asap** if the CI worklows fails after a commit on the `main` branch.
+
 
 ## Repo structure
 ```bash
