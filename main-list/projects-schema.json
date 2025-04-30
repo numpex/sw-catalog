@@ -1,5 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "stringOrStringArray": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      ]
+    }
+  },
   "type": "object",
   "required": ["projects"],
   "properties": {
@@ -8,30 +19,29 @@
       "items": {
         "type": "object",
         "properties": {
+          "name": {
+            "description": "The name of the project.",
+            "type": "string"
+          },
           "description": {
             "description": "A detailed description of the project.",
             "type": "string"
           },
           "discussion": {
             "description": "A URL or reference to project discussions.",
-            "type": "string"
+            "$ref": "#/$defs/stringOrStringArray"
           },
           "documentation": {
             "description": "A URL or reference to the project documentation.",
-            "type": "string"
+            "$ref": "#/$defs/stringOrStringArray"
           },
           "guix_package": {
             "description": "Information about the Guix package.",
-            "type": "string"
-          },
-          "name": {
-            "description": "The name of the project.",
-            "type": "string"
+            "$ref": "#/$defs/stringOrStringArray"
           },
           "spack_package": {
             "description": "A URL to the Spack package.",
-            "format": "uri",
-            "type": "string"
+            "$ref": "#/$defs/stringOrStringArray"
           }
         },
         "required": [
