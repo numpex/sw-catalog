@@ -62,6 +62,14 @@
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/storm.scm",
       "name": "StarPU",
       "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/starpu/package.py"
+    },
+    {
+      "description": "Desc",
+      "name": "name",
+      "discussion": [
+        "https://example.com",
+        "https://example.com"
+      ]
     }
   ]
 }
