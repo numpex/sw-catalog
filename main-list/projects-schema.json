@@ -42,6 +42,10 @@
           "spack_package": {
             "description": "A URL to the Spack package.",
             "$ref": "#/$defs/stringOrStringArray"
+          },
+          "self_assessment": {
+            "description": "A URL to a form containing the Software Guidelines Self-Assessment",
+            "$ref": "#/$defs/stringOrStringArray"
           }
         },
         "required": [
