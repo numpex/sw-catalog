@@ -1,18 +1,29 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$defs": {
-    "stringOrStringArray": {
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^(https?|http?)://"
+    },
+    "uriOrArray": {
       "oneOf": [
-        { "type": "string" },
+        {
+          "$ref": "#/$defs/uri"
+        },
         {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "$ref": "#/$defs/uri"
+          }
         }
       ]
     }
   },
   "type": "object",
-  "required": ["projects"],
+  "required": [
+    "projects"
+  ],
   "properties": {
     "projects": {
       "type": "array",
@@ -29,19 +40,19 @@
           },
           "discussion": {
             "description": "A URL or reference to project discussions.",
-            "$ref": "#/$defs/stringOrStringArray"
+            "$ref": "#/$defs/uriOrArray"
           },
           "documentation": {
             "description": "A URL or reference to the project documentation.",
-            "$ref": "#/$defs/stringOrStringArray"
+            "$ref": "#/$defs/uriOrArray"
           },
           "guix_package": {
             "description": "Information about the Guix package.",
-            "$ref": "#/$defs/stringOrStringArray"
+            "$ref": "#/$defs/uriOrArray"
           },
           "spack_package": {
             "description": "A URL to the Spack package.",
-            "$ref": "#/$defs/stringOrStringArray"
+            "$ref": "#/$defs/uriOrArray"
           }
         },
         "required": [
