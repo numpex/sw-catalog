@@ -70,6 +70,14 @@
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/composyx.scm",
       "name": "Composyx",
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/composyx/package.py"
+    },
+    {
+      "description": "PaStiX is a scientific library that provides a high performance parallel solver for very large sparse linear systems based on direct methods. It provides some low-rank compression methods to reduce the memory footprint and/or the time-to-solution.",
+      "discussion": "https://gitlab.inria.fr/solverstack/pastix/-/issues",
+      "documentation": "https://solverstack.gitlabpages.inria.fr/pastix/index.html",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm",
+      "name": "PaStiX",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/pastix/package.py"
     }
   ]
 }
