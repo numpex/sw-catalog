@@ -78,13 +78,13 @@
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm",
       "name": "PaStiX",
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/pastix/package.py"
-    }
+    },
     {
       "description": "Hawen solves time-harmonic forward and inverse wave problems using the Hybridizable Discontinuous Galerkin method. It considers large-scale applications such as Earth's imaging and helioseismology.",
       "discussion": "https://gitlab.com/ffaucher/hawen",
       "documentation": "https://ffaucher.gitlab.io/hawen-website/",
       "name": "Hawen",
-      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/hawen.scm?ref_type=heads",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/hawen.scm?ref_type=heads"
     }
   ]
 }
