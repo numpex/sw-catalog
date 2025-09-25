@@ -61,7 +61,7 @@
       "documentation": "https://starpu.gitlabpages.inria.fr/doc.html",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/storm.scm",
       "name": "StarPU",
-      "spack_package": "https://github.com/spack/spack-packages/tree/develop/repos/spack_repo/builtin/packages/starpug/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/tree/develop/repos/spack_repo/builtin/packages/starpu/package.py"
     },
     {
       "description": "Composyx is a linear algebra modern C++ library focused on composability. Its purpose is to allow the user to express a large panel of numerical algorithms using a high-level interface to range from laptop prototypes to many node supercomputer parallel computations.",
