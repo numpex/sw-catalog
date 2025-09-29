@@ -1,0 +1,1 @@
+https://gitlab.inria.fr/furmento/numpex/-/raw/main/codemeta.json
