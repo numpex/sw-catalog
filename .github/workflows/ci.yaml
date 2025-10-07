@@ -4,6 +4,7 @@ on:
   push: 
     paths:
       - "**/*.json"
+      - "**/*.yaml"
   pull_request: 
     paths:
       - "**/*.json"
@@ -19,8 +20,20 @@ jobs:
       - name: ❄️ Install Nix
         uses: cachix/install-nix-action@v31
 
-      - name: ✅ Check schema
+      - name: 1️⃣ Check schema
         run: |
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
+            
+      - name: 2️⃣ Regenerate catalog (fake)
+        run: |
+          cp ./main-list/projects.json ./main-list/projects-generated.json
 
+      - name: 3️⃣ Commit projects_generated.json to main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ./main-list/projects-generated.json
+          git diff --cached --quiet || git commit -m "Regenerate project catalog via CI"
+          git push          
