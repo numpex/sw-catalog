@@ -35,12 +35,14 @@ jobs:
 
       - name: 2️⃣ Regenerate catalog
         run: |
-          # Set strict mode only for push or PR events
-          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
-            STRICT="--strict"
-          else
-            STRICT=""
-          fi
+          # In a first step we set strict mode in all cases so that the pipeline will fail if something goes wrong
+          STRICT="--strict"
+          # Latter on we might set strict mode only for push or PR events
+          #if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+          #  STRICT="--strict"
+          #else
+          #  STRICT=""
+          #fi
           python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $STRICT
           diff ./main-list/projects.json ./main-list/projects-generated.json || :
 
@@ -49,7 +51,7 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
 
-      - name: 4️⃣ Commit projects_generated.json to main
+      - name: 4️⃣ On push in main, Commit projects_generated.json to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
@@ -57,3 +59,26 @@ jobs:
           git add ./main-list/projects-generated.json
           git diff --cached --quiet || git commit -m "Regenerate project catalog via CI"
           git push          
+
+      - name: 4️⃣ On schedule, Commit generated projects.json to bot branch and create PR
+        if: github.event_name == 'schedule'
+        env:
+          BOT_BRANCH: ci/generated-projects
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b $BOT_BRANCH
+          git add ./main-list/projects-generated.json
+          git diff --cached --quiet || git commit -m "Regenerate projects catalog via CI"
+          git push -u origin $BOT_BRANCH --force
+
+      - name: On schedule, Create pull request from bot branch
+        if: github.event_name == 'schedule'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Regenerate projects catakog via CI"
+          branch: ci/generated-projects
+          base: main
+          title: "Regenerate projects.json via CI"
+          body: "Automatic update of projects.json based on latest Codemeta files."
