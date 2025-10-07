@@ -35,8 +35,19 @@ jobs:
 
       - name: 2️⃣ Regenerate catalog
         run: |
-          python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json
-          diff ./main-list/projects.json ./main-list/projects-generated.json
+          # Set strict mode only for push or PR events
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            STRICT="--strict"
+          else
+            STRICT=""
+          fi
+          python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $STRICT
+          diff ./main-list/projects.json ./main-list/projects-generated.json || :
+
+      - name: 3️⃣ Check schema of generated catalog
+        run: |
+          nix run nixpkgs#check-jsonschema -- \
+            --schemafile ./main-list/projects-schema.json ./main-list/projects.json
 
       - name: 4️⃣ Commit projects_generated.json to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
