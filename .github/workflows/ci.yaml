@@ -72,7 +72,7 @@ jobs:
           git diff --cached --quiet || git commit -m "Regenerate projects catalog via CI"
           git push -u origin $BOT_BRANCH --force
 
-      - name: On schedule, Create pull request from bot branch
+      - name: 5️⃣ On schedule, Create pull request from bot branch
         if: github.event_name == 'schedule'
         uses: peter-evans/create-pull-request@v5
         with:

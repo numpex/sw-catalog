@@ -2,9 +2,9 @@
 
 This repo centralizes the list of projects following the [NumPEx Software Integration guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html).
 
-Human-readable version of the catalog is available on this [website](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/index.html).
+Human-readable version of the SW catalog is available on this [website](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/index.html).
 
-## How to add your own software into that catalog ?
+## How to add your own software into the SW Catalog ?
 
 1. Fork this repo and create a new branch
 2. Perform a self assesment of your software module with respect to the [NumPEx Software Guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html)
@@ -12,25 +12,76 @@ Human-readable version of the catalog is available on this [website](https://num
 4. Update `main-list/projets.json` in your fork, by adding an entry for each package you want to include in the NumPEx SW Catalog:
 ~~~~json
   {
+    "name": "My Super Software",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\nveniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\ncommodo consequat. Duis aute irure dolor in reprehenderit in voluptate\nvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\ncupidatat non proident, sunt in culpa qui officia deserunt mollit anim id\nest laborum.\n",
     "discussion": "https://example.com/discussion",
     "documentation": "https://example.com/",
     "guix_package": "https://example.com/guix",
-    "name": "My Super Software",
     "spack_package": "https://example.com/spack"
   }
 ~~~~
 5. Initiate a _pull request_ for your changes
 6. After screening and evaluation by NumPEx team, your software will be added into the catalog.
 
+## What if you already have Codemeta file (or alike) for your software ?
+
+In case some of the fields listed above are already documented at another place, for instance a Codemeta file contained in your project repo, we offer a solution to avoid any duplication or redundant typing.
+
+Let's assume for instance that your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`, and that you would like to use content of these Codemeta fields to fill up the `description`, `documentation` and `discussion` fields  of the SW Catalog (respectively).
+
+Then in step 4 above, just keep the corresponding fields empty, or put some default text:
+~~~~json
+  {
+    "name": "My Super Software",
+    "description": "",
+    "discussion": "",
+    "documentation": "",
+    "guix_package": "https://example.com/guix",
+    "spack_package": "https://example.com/spack"
+  }
+~~~~
+
+And before initiating the _pull request_  update also the `main-list/mapping.json` file in you fork, adding a new item for your project in the `projects` array, like this:
+~~~~json
+{
+  "projects": [
+    {
+      "name": "My Super Software",
+      "source": "https://url.to.your.repo/codemeta.json",
+      "fields": 
+        {
+          "description":  ".description",
+		      "discussion":   ".issueTracker",
+		      "documentation":  ".buildInstructions"
+        }
+    }
+  ]
+}
+~~~~
+This gives the instructions to the CI system where to download the metadata for your project, and how to retrieve each field needed to build the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries, so they can be much more complex than just extracting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
+
+Notes:
+1. The CI system will periodically update the SW catalog, pulling the latest changes that you have applied in your Codemeta file
+2. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` will be used as backup - therefore it's recommended to put some default text, rather than an empty string.
+2. We are totally agnostic to Codemeta ; the same can be applied to any JSON file.
+
 ## Information for Maintainers
 
-The website generates a human-readable of the SW catalog by dynamically parsing the latest commit for the `projects.json` file in the `main` branch. Please be aware that an incorrect JSON file in the `main` branch may cause erroneous rendering or even undefined behaviour (e.g. webbrowser crash) when users access the catalog page from the website.
+### How does it work ? 
 
-Workflow named `ci`  aims to validate the JSON file to be proper JSON, and to check for missing fields. It is triggered for each pull request, and for each commit/ direct push in the repo. **Make sure to fix the JSON file asap** if the CI worklows fails after a commit on the `main` branch.
+The website generates a human-readable of the SW catalog by dynamically parsing the latest commit for the `main-list/projects-generated.json` file in the `main` branch. 
+Please be aware that unexpected content in this file may cause erroneous rendering or even undefined behaviour (e.g. webbrowser crash) when users access the catalog page from the website. **Make sure to fix any problem in that file asap**.
+
+As it name suggests, the `projects-generated.json` file is generated by the CI system, by applying all the updates described in `main-list/mapping.json` to the (human-edited) file `main-list/projects.json`.
+
+Following workflows are implemented:
+- In a PR : validate the format of `projects.json`, try to generate the `projects-generated.json` and validate the format of `projects-generated.json`
+- When pushing to main : same + commit the latest update of `projects-generated.json`
+- Periodically : same + create a new branch & a PR for the periodic update (if needed)
+
 ### How to add a new field to the schema?
 
-The final page, is generated from 2 repositories:
+The final HTML page, is generated from 2 repositories:
 
 - This `sw-catalog` repo, that holds the data.
 - The [`tutorials`](https://gitlab.inria.fr/numpex-pc5/tutorials) repo, that renders the catalog.
@@ -52,16 +103,20 @@ The projects are rendered with the following steps:
 3. The projects shotcode loads and calls the following Javascript `projects.mjs`: https://gitlab.inria.fr/numpex-pc5/tutorials/-/blob/main/docs/assets/js/projects.mjs
 
 ## Repo structure
-```bash
+```
 .
 |
 ├── main-list
 │   ├── projects-schema.json
-│   └── projects.json                  => THE LIST CONTAINING ALL PROJECTS
+│   ├── projects-generated.json        => THE GENERATED CATALOG - DON'T TOUCH
+│   ├── mappings.json                  => THE INSTRUCTIONS FOR FETCHING FROM EXTERNAL JSON FILES
+│   └── projects.json                  => THE LIST OF PROJECTS - HUMAN EDITABLE
 |
 ├── self-assessment                    => THE FOLDER CENTRALIZING SELF-ASSESSMENTS
 │   ├── some-sw-module.md
 │   └── another_module.md
+|
+├── scripts                            => THE FOLDER FOR SCRIPTS
 |
 ├── .github
 │   └── workflows                      => CI WORKFLOWS
