@@ -85,6 +85,14 @@
       "documentation": "https://ffaucher.gitlab.io/hawen-website/",
       "name": "Hawen",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/hawen.scm?ref_type=heads"
+    },
+    {
+      "description": "NewMadeleine is a communication library for high-performance networks. It scales well and supports multi-threaded communication (MPI_THREAD_MULTIPLE). It may be used through its MPI interface or its native interface.",
+      "discussion": "https://gitlab.inria.fr/pm2/pm2/-/issues",
+      "documentation": "https://pm2.gitlabpages.inria.fr/pm2/nmad/doc/",
+      "name": "NewMadeleine",
+      "guix_package": "https://hpc.guix.info/package/nmad-pukabi",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/nmad/package.py"
     }
   ]
 }
