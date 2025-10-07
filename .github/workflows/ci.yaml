@@ -36,6 +36,7 @@ jobs:
       - name: 2️⃣ Regenerate catalog
         run: |
           python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json
+          diff ./main-list/projects.json ./main-list/projects-generated.json
 
       - name: 4️⃣ Commit projects_generated.json to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
