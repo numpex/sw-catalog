@@ -1,0 +1,90 @@
+{
+  "$schema": "./projects-schema.json",
+  "projects": [
+    {
+      "description": "Gyselalib++ is a collection of C++ components for writing gyrokinetic semi-lagrangian codes.",
+      "discussion": "https://github.com/gyselax/gyselalibxx/issues",
+      "documentation": "https://gyselax.github.io/gyselalibxx/",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/gysela.scm",
+      "name": "Gyselalib++"
+    },
+    {
+      "description": "Feel++ is an Open-Source C++ library which allows to solve a large range of partial differential equations using Galerkin methods, e.g. finite element method, spectral element method, discontinuous Galerkin methods or reduced basis methods. Feel++ enables parallel computing in a seamless way and allows to solve large scale systems up to tens of thousands of cores.",
+      "discussion": "https://join.slack.com/t/feelpp/shared_invite/zt-2qe0q9hw-4pVbhohCXUE6Po9Ma8dbiQ",
+      "documentation": "https://docs.feelpp.org/home/index.html",
+      "name": "Feel++",
+      "spack_package": "https://github.com/numpex/spack.numpex/blob/main/packages/feelpp/package.py"
+    },
+    {
+      "description": "BigDFT is a free software package, whose main program allows the total energy, charge density, and electronic structure of systems made of electrons and nuclei (molecules and periodic/crystalline solids) to be calculated within density functional theory (DFT), using pseudopotentials, and a wavelet basis.",
+      "discussion": "https://bigdft.org/index.html%3Fp=41.html",
+      "documentation": "https://l_sim.gitlab.io/bigdft-suite/index.html",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/chemistry.scm",
+      "name": "BigDFT",
+      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/bigdft-suite/package.py"
+    },
+    {
+      "description": "Chameleon is a dense linear algebra solver relying on sequential task-based algorithms where sub-tasks of the overall algorithms are submitted to a run-time system. Such a system is a layer between the application and the hardware which handles the scheduling and the effective execution of tasks on the processing units. A run-time system such as StarPU is able to manage automatically data transfers between not shared memory area (CPUs-GPUs, distributed nodes).",
+      "discussion": "https://gitlab.inria.fr/solverstack/chameleon/-/issues",
+      "documentation": "https://solverstack.gitlabpages.inria.fr/chameleon/",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm",
+      "name": "Chameleon",
+      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/chameleon/package.py"
+    },
+    {
+      "description": "PDI supports loose coupling of simulation codes with data handling the simulation code is annotated in a library-agnostic way, libraries are used from the specification tree.",
+      "discussion": "https://join.slack.pdi.dev/",
+      "documentation": "https://pdi.dev/main/",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/pdi.scm",
+      "name": "PDI",
+      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/pdi/package.py"
+    },
+    {
+      "description": "Melissa is a file-avoiding, adaptive, fault-tolerant and elastic framework, to run large-scale sensitivity analysis or deep-surrogate training on supercomputers.",
+      "discussion": "https://melissa.discourse.group/",
+      "documentation": "https://melissa.gitlabpages.inria.fr/melissa/",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/melissa.scm",
+      "name": "Melissa",
+      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/melissa/package.py"
+    },
+    {
+      "description": "FreeFEM is a popular 2D and 3D partial differential equations (PDE) solver. It allows you to easily implement your own physics modules using the provided FreeFEM language. FreeFEM offers a large list of finite elements, like the Lagrange, Taylor-Hood, etc., usable in the continuous and discontinuous Galerkin method framework.",
+      "discussion": "https://community.freefem.org/",
+      "documentation": "https://doc.freefem.org/introduction/index.html",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/math.scm",
+      "name": "FreeFEM++",
+      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/freefem/package.py"
+    },
+    {
+      "description": "StarPU is a task-based runtime system for heterogeneous platforms coupling a performance modeling scheduler with a distributed shared-memory manager. It provides a framework for task scheduling on heterogeneous, accelerated platforms, together with an API for implementing various classes of scheduling algorithms. This scheduling framework jointly works with a distributed shared-memory manager to optimize task mappings and data transfers, and to overlap communications with computations.",
+      "discussion": "https://discord.gg/vKVJsuHB8U",
+      "documentation": "https://starpu.gitlabpages.inria.fr/doc.html",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/storm.scm",
+      "name": "StarPU",
+      "spack_package": "https://github.com/spack/spack-packages/tree/develop/repos/spack_repo/builtin/packages/starpu/package.py"
+    },
+    {
+      "description": "Composyx is a linear algebra modern C++ library focused on composability. Its purpose is to allow the user to express a large panel of numerical algorithms using a high-level interface to range from laptop prototypes to many node supercomputer parallel computations.",
+      "discussion": "https://gitlab.inria.fr/composyx/composyx-private/-/issues",
+      "documentation": "https://composyx.gitlabpages.inria.fr/composyx/",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/composyx.scm",
+      "name": "Composyx",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/composyx/package.py"
+    },
+    {
+      "description": "PaStiX is a scientific library that provides a high performance parallel solver for very large sparse linear systems based on direct methods. It provides some low-rank compression methods to reduce the memory footprint and/or the time-to-solution.",
+      "discussion": "https://gitlab.inria.fr/solverstack/pastix/-/issues",
+      "documentation": "https://solverstack.gitlabpages.inria.fr/pastix/index.html",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm",
+      "name": "PaStiX",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/pastix/package.py"
+    },
+    {
+      "description": "Hawen solves time-harmonic forward and inverse wave problems using the Hybridizable Discontinuous Galerkin method. It considers large-scale applications such as Earth's imaging and helioseismology.",
+      "discussion": "https://gitlab.com/ffaucher/hawen",
+      "documentation": "https://ffaucher.gitlab.io/hawen-website/",
+      "name": "Hawen",
+      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/hawen.scm?ref_type=heads"
+    }
+  ]
+}
