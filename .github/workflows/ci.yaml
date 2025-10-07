@@ -25,11 +25,19 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
             
-      - name: 2️⃣ Regenerate catalog (fake)
-        run: |
-          cp ./main-list/projects.json ./main-list/projects-generated.json
+      - name: ❄️ Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
-      - name: 3️⃣ Commit projects_generated.json to main
+      - name: ❄️ Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq          
+
+      - name: 2️⃣ Regenerate catalog
+        run: |
+          python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json
+
+      - name: 4️⃣ Commit projects_generated.json to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
