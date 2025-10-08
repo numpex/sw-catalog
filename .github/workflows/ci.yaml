@@ -69,7 +69,7 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
 
-      - name: 4️⃣ On push in main, Commit projects_generated.json to main
+      - name: 4️⃣ On push in main, Commit generated catalog to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
@@ -78,8 +78,8 @@ jobs:
           git diff --cached --quiet || git commit -m "Regenerate project catalog via CI"
           git push          
 
-      - name: 4️⃣ On schedule, Commit generated projects.json to bot branch and create PR
-        if: github.event_name == 'schedule'
+      - name: 4️⃣ On schedule, Commit generated catalog to bot branch and create PR
+        if: false  # 👈 Step to be removed after test
         env:
           BOT_BRANCH: ci/generated-projects
         run: |
@@ -90,13 +90,13 @@ jobs:
           git diff --cached --quiet || git commit -m "Regenerate projects catalog via CI"
           git push -u origin $BOT_BRANCH --force
 
-      - name: 5️⃣ On schedule, Create pull request from bot branch
-        if: github.event_name == 'schedule'
+      - name: 4️⃣ On schedule, Commit generated catalog to bot branch and create PR
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Regenerate projects catakog via CI"
+          commit-message: "Regenerate projects catalog via CI"
           branch: ci/generated-projects
-          base: main
-          title: "Regenerate projects.json via CI"
-          body: "Automatic update of projects.json based on latest Codemeta files."
+          base: introduce-generator
+          title: "Regenerate projects catalog via CI"
+          body: "Automatic update of projects_generated.json based on latest Codemeta or project metadata files."
