@@ -26,17 +26,17 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
           echo "Checking uniqueness of names..."
-          jq -e '\
-            [.projects[].name] as $names \
-            | $names \
-            | group_by(.) \
-            | map(select(length > 1) | .[0]) as $dupes \
-            | if ($dupes | length) > 0 then \
-                ( "Error: duplicate project name(s) found: " + ($dupes | join(", ")) ) \
-                | halt_error(1) \
-              else \
-                "All project names are unique" \
-              end \
+          jq -e '
+            [.projects[].name] as $names 
+            | $names
+            | group_by(.) 
+            | map(select(length > 1) | .[0]) as $dupes 
+            | if ($dupes | length) > 0 then 
+                ( "Error: duplicate project name(s) found: " + ($dupes | join(", ")) ) 
+                | halt_error(1) 
+              else 
+                "All project names are unique" 
+              end 
             ' ./main-list/projects.json
            
       - name: ❄️ Set up Python
