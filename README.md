@@ -63,10 +63,10 @@ This gives the instructions to the CI system where to fetch the metadata for you
 > [!Note]
 > 1. The CI system will periodically update the SW catalog, syncing with latest changes from your Codemeta file
 > 2. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` will be used as backup. 
-> It's thererfore recommended to put some default text in it, rather than leaving an empty strings.
-> 3. We are totally agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
+> It's thererfore recommended to put some default text in it, rather than leaving an empty string.
+> 3. We are agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
 > 4. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
-> 5. The same project can appear multiple times in the `main-list/mapping.json` file, in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one override earlier ones.
+> 5. The same project can appear multiple times in the `main-list/mapping.json` file  in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one overrides earlier ones.
 
 ## Information for Maintainers
 
