@@ -5,19 +5,6 @@
       "type": "string",
       "format": "uri",
       "pattern": "^(https?|http?)://"
-    },
-    "uriOrArray": {
-      "oneOf": [
-        {
-          "$ref": "#/$defs/uri"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/uri"
-          }
-        }
-      ]
     }
   },
   "type": "object",
@@ -36,7 +23,7 @@
             },
             "source": {
                 "description": "The URL of the project's codemeta or source meta data.",
-                "type": "#/$defs/uri"
+                "$ref": "#/$defs/uri"
             },
             "fields": {
                 "type": "object",
