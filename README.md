@@ -81,6 +81,13 @@ Following workflows are implemented:
 - When pushing to main: same + commit the new version of `projects-generated.json`
 - Periodically: same + commit the latest update of `projects-generated.json` in a new branch & issue a PR (if needed)
 
+### What are the conditions to accept a PR ?
+
+Currently the conditions are very loose; we only check:
+1. that the self-assesment file is provided
+2. that there is no obvious typo in the description or project name
+3. that the format of the file is valid (done by CI workflow)
+
 ### How to add a new field to the schema ?
 
 The final HTML page, is generated from 2 repositories:
