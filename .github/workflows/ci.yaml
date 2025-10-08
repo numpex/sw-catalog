@@ -8,6 +8,9 @@ on:
   pull_request: 
     paths:
       - "**/*.json"
+  schedule:
+    # Daily at 01:00 UTC
+    - cron: "0 1 * * *"      
   workflow_dispatch:
 
 jobs:
@@ -20,16 +23,56 @@ jobs:
       - name: ❄️ Install Nix
         uses: cachix/install-nix-action@v31
 
-      - name: 1️⃣ Check schema
+      - name: ❄️ Install jq
+        if: false   # 👈 disables this step as Jq appears to be already installed
+        run: sudo apt-get update && sudo apt-get install -y jq  
+
+      - name: 1️⃣ Validate input Json files
+        run: |
+          echo "Checking projects.json schema..."
+          nix run nixpkgs#check-jsonschema -- \
+            --schemafile ./main-list/projects-schema.json ./main-list/projects.json
+          echo "Checking uniqueness of names..."
+          jq -e '
+            [.projects[].name] as $names 
+            | $names
+            | group_by(.) 
+            | map(select(length > 1) | .[0]) as $dupes 
+            | if ($dupes | length) > 0 then 
+                ( "Error: duplicate project name(s) found: " + ($dupes | join(", ")) ) 
+                | halt_error(1) 
+              else 
+                "All project names are unique" 
+              end 
+            ' ./main-list/projects.json
+          echo "Checking mapping.json schema..."
+          nix run nixpkgs#check-jsonschema -- \
+            --schemafile ./main-list/mapping-schema.json ./main-list/mapping.json
+           
+      - name: ❄️ Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+   
+      - name: 2️⃣ Regenerate catalog
+        run: |
+          # In a first step we set strict mode in all cases so that the pipeline will fail if something goes wrong
+          STRICT="--strict"
+          # Latter on we might set strict mode only for push or PR events
+          #if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+          #  STRICT="--strict"
+          #else
+          #  STRICT=""
+          #fi
+          python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $STRICT
+          diff ./main-list/projects.json ./main-list/projects-generated.json || :
+
+      - name: 3️⃣ Validate generated catalog
         run: |
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
-            
-      - name: 2️⃣ Regenerate catalog (fake)
-        run: |
-          cp ./main-list/projects.json ./main-list/projects-generated.json
 
-      - name: 3️⃣ Commit projects_generated.json to main
+      - name: 4️⃣ On push in main, commit generated catalog to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
@@ -37,3 +80,14 @@ jobs:
           git add ./main-list/projects-generated.json
           git diff --cached --quiet || git commit -m "Regenerate project catalog via CI"
           git push          
+
+      - name: 4️⃣ On schedule, commit generated catalog to bot branch and create PR
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Regenerate projects catalog via CI"
+          branch: ci/generated-projects
+          base: ${{ github.ref_name }}
+          title: "Regenerate projects catalog via CI"
+          body: "Automatic update of projects_generated.json based on latest Codemeta or source meta data. Please check and merge if appropriate."
