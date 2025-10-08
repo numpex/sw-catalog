@@ -8,8 +8,8 @@
                 "description": ".description",
                 "discussion": ".softwareSuggestions",
                 "documentation": ".softwareHelp",
-		        "guix_package": ".packages[] | select(.name == \"guix\") | .url",
-		        "spack_package": ".packages[] | select(.name == \"spack\") | .url"
+		        "guix_package": ".installURL[] | select(.name == \"guix\") | .url",
+		        "spack_package": ".installURL[] | select(.name == \"spack\") | .url"
             }
         }      
     ]  
