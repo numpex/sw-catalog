@@ -36,7 +36,7 @@
       "discussion": "https://join.slack.pdi.dev/",
       "documentation": "https://pdi.dev/main/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/pdi.scm",
-      "name": "BigDFT",
+      "name": "PDI",
       "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/pdi/package.py"
     },
     {
