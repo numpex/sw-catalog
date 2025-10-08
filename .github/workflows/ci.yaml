@@ -20,6 +20,10 @@ jobs:
       - name: ❄️ Install Nix
         uses: cachix/install-nix-action@v31
 
+      - name: ❄️ Install jq
+        if: false   # 👈 disables this step as Jq appears to be already installed
+        run: sudo apt-get update && sudo apt-get install -y jq  
+
       - name: 1️⃣ Validate projects.json
         run: |
           echo "Checking schema..."
@@ -43,10 +47,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
-
-      - name: ❄️ Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq          
-
+   
       - name: 2️⃣ Regenerate catalog
         run: |
           # In a first step we set strict mode in all cases so that the pipeline will fail if something goes wrong
