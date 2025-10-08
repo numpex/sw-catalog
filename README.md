@@ -27,9 +27,12 @@ Human-readable version of the SW catalog is available on this [website](https://
 
 In case some of the fields expected for the SW Catalog are already documented at another place, for instance a Codemeta file contained in your project repo, we offer a solution to avoid any duplication or redundant typing.
 
-Let's assume for instance that your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`, and that you would like to use content of these Codemeta fields to fill in the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively).
+Let's assume for the sake of example that:
+- your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`,
+- you would like to use content of these Codemeta fields to fill in the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively)
+- you would like that the other fields of the SW Catalog (`guix_package` and `spack_package`) are managed in the classic way, via `projets.json`
 
-Then in the step 4 of the submission workflow, just keep the corresponding fields empty, or put some default text (see note 2 below):
+Then in the step 4 of the submission workflow, when editing `main-list/projets.json` in your fork, just fill in the `guix_package` and `spack_package` fields, you can leave the other fields empty (or put some default text - see note 2 below):
 ~~~~json
   {
     "name": "My Super Software",
@@ -41,7 +44,7 @@ Then in the step 4 of the submission workflow, just keep the corresponding field
   }
 ~~~~
 
-And before initiating the _pull request_  update also the `main-list/mapping.json` file in you fork, adding a new item for your project in the `projects` array, like this:
+Then before initiating the _pull request_, you must also update the `main-list/mapping.json` file in you fork, adding a new item for your project in the `projects` array, like this:
 ~~~~json
 {
   "projects": [
@@ -58,7 +61,7 @@ And before initiating the _pull request_  update also the `main-list/mapping.jso
   ]
 }
 ~~~~
-This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field expected for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file, the result of the query being used to fill in the field of the SW Catalog mentionned on the left side.
+This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field needed for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file, the result of the query being used to fill in the field of the SW Catalog mentionned on the left side.
 
 > [!Note]
 > 1. The CI system will periodically update the SW catalog, syncing with latest changes from your Codemeta file
