@@ -27,7 +27,7 @@ Human-readable version of the SW catalog is available on this [website](https://
 
 In case some of the fields expected for the SW Catalog are already documented at another place, for instance a Codemeta file contained in your project repo, we offer a solution to avoid any duplication or redundant typing.
 
-Let's assume for instance that your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`, and that you would like to use content of these Codemeta fields to fill up the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively).
+Let's assume for instance that your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`, and that you would like to use content of these Codemeta fields to fill in the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively).
 
 Then in the step 4 of the submission workflow, just keep the corresponding fields empty, or put some default text (see note 2 below):
 ~~~~json
@@ -58,7 +58,7 @@ And before initiating the _pull request_  update also the `main-list/mapping.jso
   ]
 }
 ~~~~
-This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field expected for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file. 
+This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field expected for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file, the result of the query being used to fill in the field of the SW Catalog mentionned on the left side.
 
 > [!Note]
 > 1. The CI system will periodically update the SW catalog, syncing with latest changes from your Codemeta file
@@ -66,6 +66,7 @@ This gives the instructions to the CI system where to fetch the metadata for you
 > It's thererfore recommended to put some default text in it, rather than leaving an empty strings.
 > 3. We are totally agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
 > 4. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
+> 5. The same project can appear multiple times in the `main-list/mapping.json` file, in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one override earlier ones.
 
 ## Information for Maintainers
 
