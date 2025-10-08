@@ -23,16 +23,21 @@ Human-readable version of the SW catalog is available on this [website](https://
 5. Initiate a _pull request_ for your changes
 6. After screening and evaluation by NumPEx team, your software will be added into the catalog.
 
+
+> [!IMPORTANT]
+> Don't forget to reapply the same process again when some of the fields need to be updated to reflect the latest evolutions of your software !
+> The next section describes a solution that supports automatic updates of your SW Catalog entry without any user intervention.
+
 ## What if you already have Codemeta file (or alike) for your software ?
 
-In case some of the fields expected for the SW Catalog are already documented at another place, for instance a Codemeta file contained in your project repo, we offer a solution to avoid any duplication or redundant typing.
+In case some of the fields expected for the SW Catalog are already documented at another place, for instance a Codemeta file contained in your project repo, we offer a solution to avoid any duplication or redundant typing, and to enable automatic updates.
 
 Let's assume for the sake of example that:
 - your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`,
 - you would like to use content of these Codemeta fields to fill in the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively)
-- you would like that the other fields of the SW Catalog (`guix_package` and `spack_package`) are managed in the classic way, via `projets.json`
+- you would like that the other fields of the SW Catalog (`guix_package` and `spack_package`) are managed in the classic way, via `projects.json`
 
-Then in the step 4 of the submission workflow, when editing `main-list/projets.json` in your fork, just fill in the `guix_package` and `spack_package` fields, you can leave the other fields empty (or put some default text - see note 2 below):
+Then in the step 4 of the submission workflow, when editing `main-list/projets.json` in your fork, you just need to fill in the `guix_package` and `spack_package` fields, you can leave the other fields empty (or put some default text - see note 1 below):
 ~~~~json
   {
     "name": "My Super Software",
@@ -44,7 +49,7 @@ Then in the step 4 of the submission workflow, when editing `main-list/projets.j
   }
 ~~~~
 
-Then before initiating the _pull request_, you must also update the `main-list/mapping.json` file in you fork, adding a new item for your project in the `projects` array, like this:
+And before initiating the _pull request_, you must also update the `main-list/mapping.json` file in you fork, adding a new item for your project in the `projects` array, like this:
 ~~~~json
 {
   "projects": [
@@ -63,13 +68,14 @@ Then before initiating the _pull request_, you must also update the `main-list/m
 ~~~~
 This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field needed for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file, the result of the query being used to fill in the field of the SW Catalog mentionned on the left side.
 
+**Automatic updates of the SW Catalog with the latest versions of the source meta data will be performed daily.**
+
 > [!Note]
-> 1. The CI system will periodically update the SW catalog, syncing with latest changes from your Codemeta file
-> 2. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` will be used as backup. 
+> 1. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` will be used as backup. 
 > It's thererfore recommended to put some default text in it, rather than leaving an empty string.
-> 3. We are agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
-> 4. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
-> 5. The same project can appear multiple times in the `main-list/mapping.json` file  in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one overrides earlier ones.
+> 2. We are agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
+> 3. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
+> 4. The same project can appear multiple times in the `main-list/mapping.json` file  in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one overrides earlier ones.
 
 ## Information for Maintainers
 
