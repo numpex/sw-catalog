@@ -1,12 +1,5 @@
 {
     "$schema": "./mapping-schema.json",
     "projects": [
-        {
-            "name": "StarPU",
-            "source": "https://gitlab.inria.fr/starpu/starpu/-/raw/master/codemeta.json?ref_type=heads",
-            "fields": {
-                "description": ".description"
-            }
-        }
     ]  
 }

@@ -4,7 +4,7 @@ This repo centralizes the list of projects following the [NumPEx Software Integr
 
 Human-readable version of the SW catalog is available on this [website](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/index.html).
 
-## How to add your own software into the SW Catalog ?
+## How to submit your own software into the SW Catalog ?
 
 1. Fork this repo and create a new branch
 2. Perform a self assesment of your software module with respect to the [NumPEx Software Guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html)
@@ -61,10 +61,10 @@ And before initiating the _pull request_  update also the `main-list/mapping.jso
 This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field expected for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file. 
 
 > [!Note]
-> 1. The CI system will periodically update the SW catalog, syncing with the latest changes from your Codemeta file
+> 1. The CI system will periodically update the SW catalog, syncing with latest changes from your Codemeta file
 > 2. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` will be used as backup. 
 > It's thererfore recommended to put some default text in it, rather than leaving an empty strings.
-> 3. We are totally agnostic to Codemeta ; the same process can be applied with any JSON file stored at a public URL.
+> 3. We are totally agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
 > 4. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 
 ## Information for Maintainers
@@ -116,9 +116,10 @@ The projects are rendered with the following steps:
 .
 |
 ├── main-list
-│   ├── projects-schema.json
+│   ├── projects-schema.json           => JSON SCHEMA
+│   ├── mapping-schema.json            => JSON SCHEMA
 │   ├── projects-generated.json        => THE GENERATED CATALOG - DON'T TOUCH
-│   ├── mappings.json                  => THE INSTRUCTIONS FOR FETCHING FROM EXTERNAL JSON FILES
+│   ├── mappings.json                  => INSTRUCTIONS FOR FETCHING FROM EXTERNAL JSON FILES - HUMAN EDITABLE
 │   └── projects.json                  => THE LIST OF PROJECTS - HUMAN EDITABLE
 |
 ├── self-assessment                    => THE FOLDER CENTRALIZING SELF-ASSESSMENTS

@@ -8,6 +8,9 @@ on:
   pull_request: 
     paths:
       - "**/*.json"
+  schedule:
+    # Daily at 01:00 UTC
+    - cron: "0 1 * * *"      
   workflow_dispatch:
 
 jobs:
@@ -69,7 +72,7 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/projects-schema.json ./main-list/projects.json
 
-      - name: 4️⃣ On push in main, Commit generated catalog to main
+      - name: 4️⃣ On push in main, commit generated catalog to main
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
@@ -78,25 +81,13 @@ jobs:
           git diff --cached --quiet || git commit -m "Regenerate project catalog via CI"
           git push          
 
-      - name: 4️⃣ On schedule, Commit generated catalog to bot branch and create PR
-        if: false  # 👈 Step to be removed after test
-        env:
-          BOT_BRANCH: ci/generated-projects
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b $BOT_BRANCH
-          git add ./main-list/projects-generated.json
-          git diff --cached --quiet || git commit -m "Regenerate projects catalog via CI"
-          git push -u origin $BOT_BRANCH --force
-
-      - name: 4️⃣ On schedule, Commit generated catalog to bot branch and create PR
+      - name: 4️⃣ On schedule, commit generated catalog to bot branch and create PR
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Regenerate projects catalog via CI"
           branch: ci/generated-projects
-          base: introduce-generator
+          base: ${{ github.ref_name }}
           title: "Regenerate projects catalog via CI"
-          body: "Automatic update of projects_generated.json based on latest Codemeta or project metadata files."
+          body: "Automatic update of projects_generated.json based on latest Codemeta or source meta data. Please check and merge if appropriate."
