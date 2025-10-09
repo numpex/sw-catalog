@@ -61,7 +61,7 @@ jobs:
           # At the moment we set conservative mode in all cases so that the pipeline will fail if something goes wrong
           OPTS="--strict --fail-on-missing"
           # Latter on we might be less conservative and accept some errors in case of scheduled updates (error mgt policy to be defined)
-          ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $OPTS
+          python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $OPTS
           diff ./main-list/projects.json ./main-list/projects-generated.json || :
 
       - name: 3️⃣ Validate generated catalog
