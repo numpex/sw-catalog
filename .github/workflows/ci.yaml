@@ -14,7 +14,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  check:
+  check_and_generate:
+    # Do not run on push event in the context of an open PR
+    if: ${{ github.event_name != 'push' || github.event.pull_request == null }}
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout
@@ -56,15 +58,10 @@ jobs:
    
       - name: 2️⃣ Regenerate catalog
         run: |
-          # In a first step we set strict mode in all cases so that the pipeline will fail if something goes wrong
-          STRICT="--strict"
-          # Latter on we might set strict mode only for push or PR events
-          #if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
-          #  STRICT="--strict"
-          #else
-          #  STRICT=""
-          #fi
-          python ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $STRICT
+          # At the moment we set conservative mode in all cases so that the pipeline will fail if something goes wrong
+          OPTS="--strict --fail-on-missing"
+          # Latter on we might be less conservative and accept some errors in case of scheduled updates (error mgt policy to be defined)
+         ./scripts/update_projects.py ./main-list/mapping.json ./main-list/projects.json -o ./main-list/projects-generated.json $OPTS
           diff ./main-list/projects.json ./main-list/projects-generated.json || :
 
       - name: 3️⃣ Validate generated catalog
