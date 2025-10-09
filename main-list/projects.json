@@ -107,7 +107,7 @@
       "discussion": "https://gitlab.inria.fr/pallas/pallas/-/issues",
       "documentation": "https://pallas.gitlabpages.inria.fr/pallas/",
       "name": "Pallas",
-      "guix_package": "https://hpc.guix.info/package/eztrace-pallas",
+      "guix_package": "https://hpc.guix.info/package/eztrace-pallas"
     }
   ]
 }
