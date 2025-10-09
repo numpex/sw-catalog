@@ -97,7 +97,7 @@
     {
       "description": "EZTrace is a tool that automatically generates execution traces from HPC programs. It generates execution trace files that can be analyze or visualize in order to identify performance bottelnecks.",
       "discussion": "https://gitlab.com/eztrace/eztrace/-/issues",
-      "documentation": " https://gitlab.com/eztrace/eztrace/-/tree/master/doc",
+      "documentation": "https://gitlab.com/eztrace/eztrace/-/tree/master/doc",
       "name": "EZTrace",
       "guix_package": "https://hpc.guix.info/package/eztrace",
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/eztrace/package.py"
