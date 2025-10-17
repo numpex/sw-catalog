@@ -22,4 +22,5 @@
       "@type": "@id",
       "rdfs:comment": "A URL pointing to the project's Spack package."
     }
+  }
 }
