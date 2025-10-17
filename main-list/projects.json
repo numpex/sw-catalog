@@ -65,7 +65,7 @@
     },
     {
       "description": "Composyx is a linear algebra modern C++ library focused on composability. Its purpose is to allow the user to express a large panel of numerical algorithms using a high-level interface to range from laptop prototypes to many node supercomputer parallel computations.",
-      "discussion": "https://gitlab.inria.fr/composyx/composyx-private/-/issues",
+      "discussion": "https://gitlab.inria.fr/composyx/composyx/-/issues",
       "documentation": "https://composyx.gitlabpages.inria.fr/composyx/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/composyx.scm",
       "name": "Composyx",
