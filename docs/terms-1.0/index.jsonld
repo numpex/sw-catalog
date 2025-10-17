@@ -5,22 +5,22 @@
     "documentation": {
       "@id": "numpex-catalog:documentation",
       "@type": "@id",
-      "rdfs:comment": "A URL pointing to the project documentation."
+      "@comment": "A URL pointing to the project documentation."
     },
     "discussion": {
       "@id": "numpex-catalog:discussion",
       "@type": "@id",
-      "rdfs:comment": "A URL pointing to project discussions."
+      "@comment": "A URL pointing to project discussions."
     },
     "guix_package": {
       "@id": "numpex-catalog:guix_package",
       "@type": "@id",
-      "rdfs:comment": "A URL pointing to the project's Guix package."
+      "@comment": "A URL pointing to the project's Guix package."
     },
     "spack_package": {
       "@id": "numpex-catalog:spack_package",
       "@type": "@id",
-      "rdfs:comment": "A URL pointing to the project's Spack package."
+      "@comment": "A URL pointing to the project's Spack package."
     }
   }
 }
