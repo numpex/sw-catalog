@@ -5,6 +5,8 @@ on:
     paths:
       - "**/*.json"
       - "**/*.yaml"
+    branches: # Do not run on push event in case of a non-main branch (PR event will trigger the CI if the branch is associated to an open PR)
+      - main
   pull_request: 
     paths:
       - "**/*.json"
