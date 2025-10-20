@@ -23,7 +23,7 @@ def fetch(url: str, strict=False):
         req = Request(url, headers={"User-Agent": "projectmeta-fetcher"})
         with urlopen(req, timeout=10) as resp:
             data = resp.read().decode()
-        json.loads(data)  # validate JSON
+        json.loads(data)  # basic JSON validation
         return data
     except (HTTPError, URLError) as e:
         log("warn", f"Failed to fetch {url}: {e}")
@@ -98,6 +98,30 @@ def update_project(existing, updates):
             existing[k] = v
 
 
+def load_mapping_fields(mapping_ref, strict=False):
+    """Load an external mapping definition (fields) from a remote URL."""
+    log("info", f"Loading mappingRef from {mapping_ref}")
+    if not (mapping_ref.startswith("http://") or mapping_ref.startswith("https://")):
+        log("error", f"mappingRef must be an HTTP(S) URL, got: {mapping_ref}")
+        if strict:
+            sys.exit(1)
+        return None
+
+    data = fetch(mapping_ref, strict=strict)
+    if not data:
+        return None
+
+    try:
+        mapping = json.loads(data)
+        # assume top-level keys are field definitions (target → jq expr)
+        return {k: v for k, v in mapping.items() if isinstance(v, str)}
+    except json.JSONDecodeError as e:
+        log("warn", f"Invalid JSON in mappingRef {mapping_ref}: {e}")
+        if strict:
+            sys.exit(1)
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Update an existing projects.json file using external JSON file (e.g. Codemeta) defined in a mapping file."
@@ -111,14 +135,15 @@ def main():
     parser.add_argument("-o", "--output", help="Write to this file instead of overwriting projects.json")
     args = parser.parse_args()
 
-    # Load files
+    # Load mapping configuration file
     try:
         with open(args.mapping) as f:
             mapping = json.load(f)
     except json.JSONDecodeError as e:
         log("error", f"Invalid JSON in mapping file {args.mapping}: {e}")
         sys.exit(1)
-    
+
+    # Load existing projects.json
     try:
         with open(args.projects) as f:
             projects_data = json.load(f)
@@ -134,9 +159,22 @@ def main():
         name = proj_cfg.get("name")
         source = proj_cfg.get("source")
         fields = proj_cfg.get("fields", {})
+        mapping_ref = proj_cfg.get("mappingRef")
 
         if not name or not source:
             log("warn", f"Skipping invalid mapping entry: {proj_cfg}")
+            continue
+
+        # Load mappingRef if provided
+        if mapping_ref and fields:
+            log("warn", f"Project {name} defines both 'mappingRef' and 'fields'; using 'fields' and ignoring mappingRef.")
+        elif mapping_ref:
+            fields = load_mapping_fields(mapping_ref, strict=args.strict)
+            if not fields:
+                log("warn", f"Could not load mappingRef for project {name}; skipping.")
+                continue
+        elif not fields:
+            log("warn", f"Project {name} has neither 'fields' nor 'mappingRef'; skipping.")
             continue
 
         json_data = fetch(source, strict=args.strict)
@@ -156,7 +194,7 @@ def main():
             new_entry = {"name": name, **extracted}
             existing_projects.append(new_entry)
 
-    # Validate (optional)
+    # Optional schema validation
     if args.schema:
         if not validate:
             log("warn", "jsonschema not installed, skipping validation.")
@@ -171,7 +209,7 @@ def main():
                 if args.strict:
                     sys.exit(1)
 
-    # Write result
+    # Write results
     output_path = args.projects if args.inplace or not args.output else args.output
     with open(output_path, "w") as f:
         json.dump(projects_data, f, indent=2)
