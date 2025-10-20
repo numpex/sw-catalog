@@ -11,6 +11,11 @@
 		        "guix_package": ".installURL[] | select(.name == \"guix\") | .url",
 		        "spack_package": ".installURL[] | select(.name == \"spack\") | .url"
             }
-        }      
+        },
+        {
+            "name": "SuperComputeSim",
+            "source": "https://drive.google.com/uc?export=download&id=1WkkojyjhjesOMncT0ZBDMaDzkjFtmI-R",
+            "mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json"
+        }
     ]  
 }
