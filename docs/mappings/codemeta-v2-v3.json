@@ -1,7 +1,13 @@
 {
-  "description": ".description",
-  "discussion": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:discussion\") | .url",
-  "documentation": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:documentation\") | .url",
-  "guix_package": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:guix_package\") | .url",
-  "spack_package": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:spack_package\") | .url"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NumPEx Standard Mapping — CodeMeta v2 & v3",
+  "description": "Defines jq expressions for extracting NumPEx catalog properties from CodeMeta v2 & v3 metadata.",
+  "type": "object",
+  "properties": {
+    "description": { "type": "string", "const": ".description" },
+    "discussion": { "type": "string", "const": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:discussion\") | .url" },
+    "documentation": { "type": "string", "const": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:documentation\") | .url" },
+    "guix_package": { "type": "string", "const": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:guix_package\") | .url" },
+    "spack_package": { "type": "string", "const": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:spack_package\") | .url" }
+  }
 }
