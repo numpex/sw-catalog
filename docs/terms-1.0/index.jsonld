@@ -8,7 +8,7 @@
     },
     "discussion": {
       "@id": "numpex-catalog:discussion",
-      "@type": "@id",
+      "@type": "@id"
     },
     "guix_package": {
       "@id": "numpex-catalog:guix_package",
