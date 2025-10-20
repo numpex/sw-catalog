@@ -25,7 +25,7 @@ Following these conventions ensures that metadata for the NumPEx projects is bot
   {
     "Role": "https://schema.org/Role",
     "roleName": "https://schema.org/roleName",
-    "numpex-catalog": "https://.../terms/"
+    "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld"
   }
 ]
 ````
@@ -70,7 +70,7 @@ Following these conventions ensures that metadata for the NumPEx projects is bot
     {
       "Role": "https://schema.org/Role",
       "roleName": "https://schema.org/roleName",
-      "numpex-catalog": "https://.../terms"
+      "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld"
     }
   ],
   "@type": "SoftwareSourceCode",
