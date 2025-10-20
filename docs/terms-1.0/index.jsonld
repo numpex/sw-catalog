@@ -4,23 +4,19 @@
     "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/",
     "documentation": {
       "@id": "numpex-catalog:documentation",
-      "@type": "@id",
-      "@comment": "A URL pointing to the project documentation."
+      "@type": "@id"
     },
     "discussion": {
       "@id": "numpex-catalog:discussion",
       "@type": "@id",
-      "@comment": "A URL pointing to project discussions."
     },
     "guix_package": {
       "@id": "numpex-catalog:guix_package",
-      "@type": "@id",
-      "@comment": "A URL pointing to the project's Guix package."
+      "@type": "@id"
     },
     "spack_package": {
       "@id": "numpex-catalog:spack_package",
-      "@type": "@id",
-      "@comment": "A URL pointing to the project's Spack package."
+      "@type": "@id"
     }
   }
 }
