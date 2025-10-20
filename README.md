@@ -28,16 +28,41 @@ Human-readable version of the SW catalog is available on this [website](https://
 > Don't forget to reapply the same process again when some of the fields need to be updated to reflect the latest evolutions of your software !
 > The next section describes a solution that supports automatic updates of your SW Catalog entry without any user intervention.
 
-## What if you already have Codemeta file (or alike) for your software ?
+## What if you already have Codemeta file for your software ?
+In case you have already a Codemeta file in your project repo, we offer an easy solution to avoid any duplication or redundant typing, and to enable automatic updates.
 
-In case some of the fields expected for the SW Catalog are already documented at another place, for instance a Codemeta file contained in your project repo, we offer a solution to avoid any duplication or redundant typing, and to enable automatic updates.
+The prerequisite is that you ensure your Codemeta file adheres to the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md).  Once this is done, you can proceed with the submission workflow documented above, with the only exception of step 4, which should be replaced by:
+
+4. a. Update `main-list/mapping.json` in your fork, by adding an entry in the `projects` property for each project you want to include :
+
+~~~~json
+        {
+            "name": "My Super Software",
+            "source": "https://url.to.your.repo/codemeta.json",
+            "mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json"
+        }
+~~~~     
+
+This specifies the location of the Codemeta file for your project, and indicates that the standard NumPEx<>Codemeta mapping rules should be applied.
+
+4. b. Execute the following commands, from the root of the `sw-catalog` folder:
+~~~~bash
+cd main-list
+python3 ../scripts/update_projects.py --strict --fail-on-missing --inplace mapping.json projects.json
+~~~~
+This triggers the initial import process (i.e. fetch your codemeta and apply the mapping rules to create a new entry in the NumPEx catalog). In case of successful completion, a new catalog entry containing the description of your project is appended to the `main-list/projects.json` file.
+
+After the submission is accepted,  **the CI system will daily fetch your codemeta file and automatically update the SW Catalog according to the changes**.
+
+## What if the standard Codemeta mapping does not suit ?
+If you are storing your project metadata in a JSON format which is not Codemeta, or that for some reason you don't want to apply the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md), you can still benefit from the automated import workflow described above, with some manual configuration.
 
 Let's assume for the sake of example that:
-- your project has already a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`,
+- your project has a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`,
 - you would like to use content of these Codemeta fields to fill in the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively)
-- you would like that the other fields of the SW Catalog (`guix_package` and `spack_package`) are managed in the classic way, via `projects.json`
+- you would like that the other fields of the SW Catalog (`guix_package` and `spack_package`) are managed in the classic way, via `projects.json`.
 
-Then in the step 4 of the submission workflow, when editing `main-list/projets.json` in your fork, you just need to fill in the `guix_package` and `spack_package` fields, you can leave the other fields empty (or put some default text - see note 1 below):
+Then in the step 4 of the submission workflow, when editing `main-list/projects.json` in your fork, you just need to fill in the `guix_package` and `spack_package` fields, you can leave the other fields empty (or put some default text - see note 1 below):
 ~~~~json
   {
     "name": "My Super Software",
@@ -68,11 +93,11 @@ And before initiating the _pull request_, you must also update the `main-list/ma
 ~~~~
 This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field needed for the SW Catalog. The string values on the right side are [Jq](https://jqlang.org/) queries that will be applied to your Codemeta file, the result of the query being used to fill in the field of the SW Catalog mentionned on the left side.
 
-**Automatic updates of the SW Catalog with the latest versions of the source meta data will be performed daily.**
+After the submission is accepted, **automatic updates of the SW Catalog with the latest versions of your source metadata file will be performed daily.**
 
 > [!Note]
-> 1. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` will be used as backup. 
-> It's thererfore recommended to put some default text in it, rather than leaving an empty string.
+> 1. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` are used as backup. 
+> It's therefore recommended to put some default text, rather than leaving an empty string.
 > 2. We are agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
 > 3. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 > 4. The same project can appear multiple times in the `main-list/mapping.json` file  in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one overrides earlier ones.
