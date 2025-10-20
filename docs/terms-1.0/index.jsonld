@@ -1,7 +1,7 @@
 {
   "@context": {
     "@vocab": "https://schema.org/",
-    "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/",
+    "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld#",
     "documentation": {
       "@id": "numpex-catalog:documentation",
       "@type": "@id"
