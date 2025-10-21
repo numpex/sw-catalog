@@ -78,15 +78,15 @@ This file lust contains one `projects` property, which is an array of mapping ob
    | `https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json` | Standard mapping for [Codemeta file v2 or v3 adhering to the NumPEx conventions](./codemeta-mapping.md) | 
 
 - `fields` : optional - the definition for a custom mapping, consisting in an object including multiple string properties:
-   - on left side, name of the NumPex catalog property to be fetched form the external JSON source - must be one of these: `documentation`, `description`, `discussion`, `guix_package` or `spack_package`. 
-   - on right side, value of the property is a [Jq](https://jqlang.org/) query to be applied on the external JSON source in order to retrieve the corresponding NumPEx property. Note that [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one specific field from the extternal JSON source - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
+   - on left side, name of the NumPex catalog property to be fetched from the external JSON source - must be one of these: `documentation`, `description`, `discussion`, `guix_package` or `spack_package`. 
+   - on right side, value of the property is a [Jq](https://jqlang.org/) query to be applied on the external JSON source in order to retrieve the corresponding NumPEx property. Note that Jq supports complex queries, possibly much more powerful than just selecting one specific field from the extternal JSON source - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 
    Missing NumPEx catalog properties will not be fetched from the external JSON source. If they are defined in `projects.json` their value will be preserved. If not, they will stay undefined.
 
 > [!Note]
 >1. Each mapping object must contain at least one of the two optional properties `mappingRef` and `fields`. In case both optional properties are defined, then the custom mapping defined in `fields` takes precedence.
 >
->2. Multiple mapping objects may refer to the same project (i.e. have an identical `name` property).  This can be useful if you want to combine multiple metadata sources for your project. The script will process the mapping objects in their order of appearance in the `mapping.json` file - if the same NumPEx Catalog property is mapped multiple times, the latter one overrides earlier > ones.
+>2. Multiple mapping objects may refer to the same project (i.e. have an identical `name` property).  This can be useful if you want to combine multiple metadata sources for your project. The script will process the mapping objects in their order of appearance in the `mapping.json` file - if the same NumPEx Catalog property is mapped multiple times for a given project, the latter mapping overrides earlier ones.
 
 
 ## Usage Examples 
@@ -111,7 +111,7 @@ Then in the step 4 of the [submission workflow](../README.md#how-to-submit-your-
   }
 ~~~~
 
-And before initiating the _pull request_, you must also update the `main-list/mapping.json` file in you fork, adding a new item for your project in the `projects` array, like this:
+And before initiating the _pull request_, you must also update the `main-list/mapping.json` file in you fork, adding a new mapping object for your project in the `projects` array, like this:
 ~~~~json
 {
   "projects": [
@@ -128,7 +128,7 @@ And before initiating the _pull request_, you must also update the `main-list/ma
   ]
 }
 ~~~~
-This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve each field needed for the SW Catalog. The fact that neither `guix_package` nor `spack_package` properties are defined indicates that these properties shall not be updated automatically ; the values you manually edited in `main-list/mapping.json` are preserved.
+This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve the fields needed for the SW Catalog. The fact that neither `guix_package` nor `spack_package` properties are defined indicates that these properties will not be updated automatically ; the values you manually edited in `main-list/mapping.json` are preserved.
 
 After the submission is accepted, **automatic updates of the SW Catalog with the latest versions of your source metadata file will be performed daily.**
 
