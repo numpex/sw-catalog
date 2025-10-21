@@ -3,13 +3,14 @@ name: ci
 on:
   push: 
     paths:
-      - "**/*.json"
-      - "**/*.yaml"
+      - "main-list/**/*.json"
+      - ".github/workflows/**/*.yaml"
     branches: # Do not run on push event in case of a non-main branch (PR event will trigger the CI if the branch is associated to an open PR)
       - main
   pull_request: 
     paths:
-      - "**/*.json"
+      - "main-list/**/*.json"
+      - ".github/workflows/**/*.yaml"
   schedule:
     # Daily at 01:00 UTC
     - cron: "0 1 * * *"      
