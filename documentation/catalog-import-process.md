@@ -6,15 +6,15 @@ The NumPEx software catalog primarily consists in a `main-list/projects.json`  f
 
 The Automatic Import & Update Process makes it possible, for given projects, to fetch these metadata (or a subset of these metadata) from external JSON sources, such as Codemeta files. The two objectives are:
 - to avoid duplicating the information for projects already having a JSON metadata file available
-- to avoid need for manual updates of the NumPEx catalog in case the JSON metadata file evolves
+- to avoid need for manual updates of the NumPEx catalog to keep in sync with evolutions of the JSON metadata file 
 
 How does it work ?
 
-- A specific configuration file called `main-list/mapping.json` specifies for each project the location of the external JSON source to be fetched, and how to map the metadata contained in this external source to NumPEx catalog properties.
-- A Python script (`update_projects.py`) is able to collect all the external metadata as defined in `mapping.json` and to update the `projects.json` file accordingly, either in place or in a specified output file.
-- The CI system triggers this script at any change in either `mapping.json` or `projects.json` + one time daily (in order to capture potential changes in external JSON sources). Output is directed to the `projects-generated.json` file, which is the one used by [HTML renderer](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/catalog/index.html) to visualise the NumPEx Catalaog.
+- A specific configuration file called `main-list/mapping.json` defines for each project the location of the external JSON source to be fetched, and specifies how to map the metadata contained in this external source to NumPEx catalog properties.
+- A Python script (`update_projects.py`) is able to collect all the external metadata as defined in `mapping.json` and to update the `projects.json` file accordingly, either in-place or in a specified output file.
+- The CI system triggers this script at any change in either `mapping.json` or `projects.json` + one time daily in order to capture potential changes in external JSON sources. Output is directed to the `projects-generated.json` file, which is the one used by [HTML renderer](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/catalog/index.html) to visualise the NumPEx Catalaog.
 - Users wanting to add a new project into the SW Catalog can either:
-   1. edit the `mapping.json` and use the script in-place to create an entry for the project into `projects.json`  - this suits very well the situation where all the catalog properties can be fetched from an external JSON source
+   1. edit the `mapping.json` file and run the script in-place to create an entry for the project into `projects.json`  - this suits very well the situation where all the catalog properties can be fetched from an external JSON source
    2. create manually an entry for the project in `projects.json` and edit the `mapping.json` to configure future updates - this corresponds to the case where only some catalog properties can be fetched from an external source, whereas others have to be manually provided.
 
 
@@ -59,7 +59,34 @@ flowchart LR
 ~~~~
 
 ## Format of the `mapping.json` file
-## Example with custom mapping
+
+This file lust contains one `projects` property, which is an array of objects. Each object have the following properties:
+
+- `name` : mandatory - the name of the project (used to match entries in `projects.json`)
+- `source` : mandatory -  the URL of the external JSON metadata file.
+- `mappingRef` : optional - the URL of a standard mapping among the following ones:
+
+   | URL | Comment |
+   | --- | --- |
+   | `https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json` | Standard mapping for [Codemeta file v2 or v3 adhering to the NumPEx conventions](./codemeta-mapping.md) | 
+
+- `fields` : optional - the definition for a custom mapping, consisting in an object with multiple string properties:
+   - The names of properties (on the left side) must correspond to NumPEx catalog properties : `documentation`, `description`, `discussion`, `guix_package` and `spack_package`. 
+   - The values of the properties (on the rigt side) are the [Jq](https://jqlang.org/) queries to be applied on the external JSON source in order to retrieve the corresponding NumPEx property. Note that [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one specific field from the extternal JSON siyrce - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
+
+   
+
+Notes :
+1. Each object must contain minimum one of the two optional properties `mappingRef` and `fields`. In case the two optional properties are defined, then the custom mapping defined in `fields` takes precedence.
+
+2. Multiple objects may refer to the same project (i.e. have an identical `name` property).  This can be useful if you want to combine multiple metadata sources for your project. The script will process the objects in their order of appearance in the `mapping.json` file - if the same NumPEx Catalog property is updated from multiple entries, the latter one overrides earlier ones.
+
+
+## Examples
+### Standard mapping
+See [README](../README.md#what-if-you-already-have-a-codemeta-file-for-your-software-).
+
+###  Custom mapping
 Let's assume for the sake of example that:
 - your project has a Codemeta file including fields `description`, `buildInstructions` and `issueTracker`,
 - you would like to use content of these Codemeta fields to fill in the `description`, `documentation` and `discussion` fields of the SW Catalog (respectively)
@@ -102,5 +129,4 @@ After the submission is accepted, **automatic updates of the SW Catalog with the
 > 1. If something goes wrong during an update (e.g. network failure), the values you have edited in `main-list/projets.json` are used as backup. 
 > It's therefore recommended to put some default text, rather than leaving an empty string.
 > 2. We are agnostic to Codemeta ; same process can be applied with any JSON file stored at a public URL.
-> 3. [Jq](https://jqlang.org/) supports complex queries, much more powerful than just selecting one field from your Codemeta file - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 > 4. The same project can appear multiple times in the `main-list/mapping.json` file  in case you want to combine multiple metadata sources for your project. If the same SW Catalog field is updated from multiple entries, the latter one overrides earlier ones.
