@@ -97,10 +97,10 @@ To add a new element for all projects:
 1. Add a new property to the schema: https://github.com/numpex/sw-catalog/blob/main/main-list/projects-schema.json
 2. Fill the property for all projects: https://github.com/numpex/sw-catalog/blob/main/main-list/projects.json
 3. Configure the tutorials page to render the new property:
-  1. Modify `projects.mjs`: https://gitlab.inria.fr/numpex-pc5/tutorials/-/blob/main/docs/assets/js/projects.mjs
-  2. Add the new field to the `typedef Project` (to have the type system properly detect it).
-  3. Add a new `dispatch` function to render a new `<li>`, similar to the existing ones.
-  4. (Optionally) Change the icon from `class="fas fa-<name>"`, from the list of icons of FontAwesome: https://fontawesome.com/icons/packs/classic
+   1. Modify `projects.mjs`: https://gitlab.inria.fr/numpex-pc5/tutorials/-/blob/main/docs/assets/js/projects.mjs
+   2. Add the new field to the `typedef Project` (to have the type system properly detect it).
+   3. Add a new `dispatch` function to render a new `<li>`, similar to the existing ones.
+   4. (Optionally) Change the icon from `class="fas fa-<name>"`, from the list of icons of FontAwesome: https://fontawesome.com/icons/packs/classic
 
 The projects are rendered with the following steps:
 

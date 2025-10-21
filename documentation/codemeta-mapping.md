@@ -58,14 +58,15 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
     | **Documentation** | If a project documentation exists, the `annotatedLink` property **shall** include a `Role` object with `roleName` `"numpex-catalog:documentation"`. The `url` **shall** point to the project documentation.                          | `json { "@type": "Role", "roleName": "numpex-catalog:documentation", "url": "https://example.com/supercomputesim/docs" }`                    |
     | **Discussion**    | If a project discussion forum or mailing list exists, the `annotatedLink` property  **shall** include a `Role` object with `roleName` `"numpex-catalog:discussion"`. The `url` **shall** point to the forum or mailing list.          | `json { "@type": "Role", "roleName": "numpex-catalog:discussion", "url": "https://forum.example.com/supercomputesim" }`      |
     | **Guix Package**  | If a Guix package exists, the `annotatedLink` property **shall** include a `Role` object with `roleName` `"numpex-catalog:guix_package"`. The `url` **shall** point to the Guix package recipe.     | `json { "@type": "Role", "roleName": "numpex-catalog:guix_package", "url": "https://guix.example.com/supercomputesim.scm" }`     |
-    | **Spack Package** | If a Spack package exists, the `annotatedLink` property  **shall** include a `Role` object with `roleName` `"numpex-catalog:spack_package"`. The `url` **shall** point to the Spack package recipe.  | `json { "@type": "Role", "roleName": "numpex-catalog:spack_package", "url": "https://spack.example.com/supercomputesim.py" }`   |
+    | **Spack Package** | If a Spack package exists, the `annotatedLink` property  **shall** include a `Role` object with `roleName` `"numpex-catalog:spack_package"`. The `url` **shall** point to the Spack package recipe.  | `json { "@type": "Role", "roleName": "numpex-catalog:spack_package", "url": "https://spack.example.com/supercomputesim.py" }`  |
 
 - For maximum interoperability, the Codemeta file **may** also include a `relatedLink` property (part of standard Codemeta schema) duplicating some or all of the URLs listed in the `annotatedLink` property. Standard Codemeta tools will look into the `relatedLink` property, while the NumPEx software catalog importer is using the `numpex-catalog:annotatedLink` property.
 
 ## A minimal Codemeta file example 
 
-~~~~json
+~~~~json annotate
 {
+# Context definition
   "@context": [
     "https://doi.org/10.5063/schema/codemeta-2.0",
      {
@@ -75,6 +76,7 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
        "url": "https://schema.org/url"
     }
   ],
+
   "@type": "SoftwareSourceCode",
   "name": "SuperComputeSim",
   "description": "A high-performance simulation toolkit for supercomputers.",
