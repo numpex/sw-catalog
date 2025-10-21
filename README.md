@@ -72,6 +72,12 @@ Following workflows are implemented:
 - When pushing to main: same + commit the new version of `projects-generated.json`
 - Periodically: same + commit the latest update of `projects-generated.json` in a new branch & issue a PR (if needed)
 
+More information on the import process and the `mapping.json` file can be found [here](./documentation/catalog-import-process.md).
+
+During the implementation of the automatic import & update process, we identified the need to make certain data available via an HTTP server: the definition of the JSON terms introduced by the NumPEx Codemeta convention, the standard mapping files that available for reference in `mapping.json` , ...
+We therefore set up Github pages, with `docs/` folder as the publishing source. For instance the file stored under `docs/terms-1.0/index.jsonld` will be served under the `https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld` URL. Standard CI workflow is used for the deployment of the Github pages.
+
+
 ### What are the conditions to accept a PR ?
 
 Currently the conditions are very loose; we only check:
@@ -79,7 +85,7 @@ Currently the conditions are very loose; we only check:
 2. that there is no obvious typo in the description or project name
 3. that the format of the file is valid (done by CI workflow)
 
-### How to add a new field to the schema ?
+### How to add a new field to the Catalog schema ?
 
 The final HTML page, is generated from 2 repositories:
 
@@ -102,6 +108,7 @@ The projects are rendered with the following steps:
 2. The `{{< projects >}}` shortcode calls the following HTML snippet: https://gitlab.inria.fr/numpex-pc5/tutorials/-/blob/main/docs/layouts/shortcodes/projects.html
 3. The projects shotcode loads and calls the following Javascript `projects.mjs`: https://gitlab.inria.fr/numpex-pc5/tutorials/-/blob/main/docs/assets/js/projects.mjs
 
+
 ## Repo structure
 ```
 .
@@ -118,6 +125,10 @@ The projects are rendered with the following steps:
 │   └── another_module.md
 |
 ├── scripts                            => THE FOLDER FOR SCRIPTS
+|
+├── documentation                      => THE FOLDER FOR DOCUMENTATION
+|
+├── docs                               => THE FOLDER FOR GITHUB PAGES DEPLOYMENT
 |
 ├── .github
 │   └── workflows                      => CI WORKFLOWS
