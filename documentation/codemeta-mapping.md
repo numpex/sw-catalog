@@ -65,10 +65,11 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
 ## A minimal Codemeta file example 
 
 ~~~~json annotate
-{
 # Context definition
+{
   "@context": [
     "https://doi.org/10.5063/schema/codemeta-2.0",
+#here
      {
        "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld#",
        "Role": "https://schema.org/Role",
