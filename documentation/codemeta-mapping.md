@@ -33,7 +33,7 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
 ````
 ### 2. Type
 
-- The `@type` property of the Codemeta file **shall** be set to `"SoftwareSourceCode"`.
+- The `@type` property of the Codemeta file **shall** be set to either `"SoftwareSourceCode"` or `"SoftwareApplication"`.
 
 ### 3. Description
 
@@ -64,12 +64,10 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
 
 ## A minimal Codemeta file example 
 
-~~~~json annotate
-# Context definition
+~~~~json
 {
   "@context": [
     "https://doi.org/10.5063/schema/codemeta-2.0",
-#here
      {
        "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld#",
        "Role": "https://schema.org/Role",
@@ -117,3 +115,7 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
   ]
 }
 ~~~~
+
+The two snippets specifically added for NumPEx catalog are :
+- The additional definitions in `@context`
+- The `numpex-catalog:annotatedLink` property
