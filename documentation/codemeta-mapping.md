@@ -3,7 +3,7 @@
 
 **NumPEx Software Catalog** is a living list of software projects adhering to the [NumPEx software integration guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html). 
 
-This document provides recommendations for creating a [CodeMeta](https://codemeta.github.io/) file so that your project can be automatically imported into the NumPEx Software Catalog. It defines conventions for structuring Codemeta files so that they contain all the information required by the catalog, in a uniform and consistent manner across projects.
+This document provides recommendations for creating a [CodeMeta](https://codemeta.github.io/) file wich can be used to automatically import your project into the NumPEx Software Catalog. It defines conventions for structuring Codemeta files so that they contain all the information required by the catalog, in a uniform and consistent manner across projects.
 
 Some NumPEx catalog fields can be populated directly from existing CodeMeta properties, while others, for which no direct Codemeta property exists, will be searched in a  custom  `numpex-catalog:annotatedLink` property. Each entry in `annotatedLink` is a structured object containing:
 - `url`: the link to the resource
@@ -133,6 +133,7 @@ The following table presents the overall resulting mapping from Codemeta fila  t
 | _Spack Package_ |  `."numpex-catalog:annotatedLink"[] \| select(.roleName == "numpex-catalog:spack_package") \| .url`  | 
 
 [^1]: however due to the lack of semantics associated to the individual URLs, we can hardly imagine any useful processing of the `relatedLink` property, except presenting all the links "in bulk" to the user. That was the main reason for introducing annotated links.
+
 
 
 
