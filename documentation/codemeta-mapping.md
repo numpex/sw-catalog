@@ -121,5 +121,17 @@ The two snippets specifically added for NumPEx catalog are :
 - The additional definitions in `@context`
 - The `numpex-catalog:annotatedLink` property
 
+## Consolidated Mapping 
+The following table presents the overall resulting mapping from Codemeta fila  to NumPEx catalog properties, using the [Jq](https://jqlang.org) queries syntax:
+| NumPEx Catalog    | JQ query to extract the information from Codemeta file |                                                                  
+| ----------------- | :--------------------------- | 
+| _Name_ | `.name` |
+| _Description_ | `.description` | 
+| _Documentation_ | `."numpex-catalog:annotatedLink"[] \| select(.roleName == "numpex-catalog:documentation") \| .url`   | 
+| _Discussion_    | `."numpex-catalog:annotatedLink"[] \| select(.roleName == "numpex-catalog:discussion") \| .url`   | 
+| _Guix Package_  | `."numpex-catalog:annotatedLink"[] \| select(.roleName == "numpex-catalog:guix_package") \| .url`  |
+| _Spack Package_ |  `."numpex-catalog:annotatedLink"[] \| select(.roleName == "numpex-catalog:spack_package") \| .url`  | 
+
 [^1]: however due to the lack of semantics associated to the individual URLs, we can hardly imagine any useful processing of the `relatedLink` property, except presenting all the links "in bulk" to the user. That was the main reason for introducing annotated links.
+
 
