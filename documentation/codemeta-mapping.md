@@ -16,8 +16,9 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
 ### 1. Context
 - The `@context` property of the Codemeta file **shall** include:
     1. the standard CodeMeta context: `"https://w3id.org/codemeta/3.0"` or `"https://doi.org/10.5063/schema/codemeta-2.0"` depending on the selected Codemeta version,
-    2. the definition of the `Role`, `roleName`and `url` terms, required to describe related resources,
-    3. the `numpex-catalog` namespace required to identify the custom role names used [below](#4-related-links) in this document.
+    2. the `numpex-catalog` namespace required to identify the custom NumPex vocabulary.
+    3. the definition of the `Role`, `roleName`and `url` terms, required to describe [annotated links](#4-annotated-links),
+
 
     An example of complete context would therefore looks like this:
 ````json
@@ -119,3 +120,4 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
 The two snippets specifically added for NumPEx catalog are :
 - The additional definitions in `@context`
 - The `numpex-catalog:annotatedLink` property
+
