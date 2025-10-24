@@ -61,7 +61,7 @@ Following these conventions ensures that metadata for NumPEx projects is both hu
     | **Guix Package**  | If a Guix package exists, the `annotatedLink` property **shall** include a `Role` object with `roleName` `"numpex-catalog:guix_package"`. The `url` **shall** point to the Guix package recipe.     | `json { "@type": "Role", "roleName": "numpex-catalog:guix_package", "url": "https://guix.example.com/supercomputesim.scm" }`     |
     | **Spack Package** | If a Spack package exists, the `annotatedLink` property  **shall** include a `Role` object with `roleName` `"numpex-catalog:spack_package"`. The `url` **shall** point to the Spack package recipe.  | `json { "@type": "Role", "roleName": "numpex-catalog:spack_package", "url": "https://spack.example.com/supercomputesim.py" }`  |
 
-- For maximum interoperability, the Codemeta file **may** also include a `relatedLink` property (part of standard Codemeta schema) duplicating some or all of the URLs listed in the `annotatedLink` property. Standard Codemeta tools will look into the `relatedLink` property, while the NumPEx software catalog importer is using the `numpex-catalog:annotatedLink` property.
+- For maximum interoperability, the Codemeta file **may** also include a `relatedLink` property (part of standard Codemeta schema) duplicating some or all of the URLs listed in the `annotatedLink` property. Standard Codemeta tools will look into the `relatedLink` property[^1], while the NumPEx software catalog importer is using the `numpex-catalog:annotatedLink` property.
 
 ## A minimal Codemeta file example 
 
@@ -121,4 +121,5 @@ The two snippets specifically added for NumPEx catalog are :
 - The additional definitions in `@context`
 - The `numpex-catalog:annotatedLink` property
 
+[^1]: however due to the lack of semantics associated to the individual URLs, we can hardly imagine any useful processing of the `relatedLink` property, except presenting all the links "in bulk" to the user. That was the main reason for introducing annotated links.
 
