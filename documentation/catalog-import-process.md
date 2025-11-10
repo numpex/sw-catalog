@@ -70,10 +70,11 @@ The commit history of each file is kept clean and we have good separation betwee
 This file must contains one `projects` property, which is an array of mapping objects. Each mapping object have the following properties:
 
 
-- `source` : mandatory -  the URL of the external JSON metadata file. May contain either one JSON object or an array of JSON objects. In the latter case, the script loops over every JSON object sequentially, and for each:
-   1.  apply the mapping for that object according to `mappingRef` or `fields` (see below)
-   2.  update the corresponding project in `projects.json`
-- `name` : optional - the name of the project to be updated in `projects.json`. When this property is omitted, the script searches for a property called `name` in the list of fields fetched when applying the mapping, and uses its value instead. 
+- `source` : mandatory -  the URL or local path to the JSON file to be used a source for projects metadata. A local path should be expressed in the form `local:path/relative/to/the/root/of/the/Git/repo/file_name.json` - attempts to escape out of the Git repo are detected and flagged as errors.
+   The source JSON file may contain either one JSON object or an array of JSON objects. In the latter case, the script loops over every JSON object sequentially, and for each:
+   1.  applies the mapping for that object according to `mappingRef` or `fields` (see below)
+   2.  updates the corresponding project in the NumPEx software catalog
+- `name` : optional - the name of the project to be updated in in the NumPEx software catalog. If this property is omitted, the script searches for a property called `name` across the fields fetched from the JSON source at the mapping step, and uses its value instead. 
 - `mappingRef` : optional - the URL of a standard mapping among the following ones:
 
    | URL | Comment |
@@ -81,17 +82,20 @@ This file must contains one `projects` property, which is an array of mapping ob
    | `https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json` | Standard mapping for [Codemeta file v2 or v3 adhering to the NumPEx conventions](./codemeta-mapping.md) | 
 
 - `fields` : optional - the definition for a custom mapping, consisting in an object including multiple string properties:
-   - on left side, name of the NumPex catalog property to be fetched from the external JSON source - must be one of these: `name`, `documentation`, `description`, `discussion`, `guix_package` or `spack_package`. 
-   - on right side, value of the property is a [Jq](https://jqlang.org/) query to be applied on the external JSON source in order to retrieve the corresponding NumPEx property. Note that Jq supports complex queries, possibly much more powerful than just selecting one specific field from the extternal JSON source - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
+   - on left side, name of the NumPex catalog property to be fetched from the JSON source - must be one of these: `name`, `documentation`, `description`, `discussion`, `guix_package` or `spack_package`. 
+   - on right side, value of the property is a [Jq](https://jqlang.org/) query to be applied on the JSON source in order to retrieve the corresponding NumPEx property. Note that Jq supports complex queries, possibly much more powerful than just selecting one specific field from the JSON source - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 
-   Missing NumPEx catalog properties will not be fetched from the external JSON source. If they are defined in `projects.json` their value will be preserved. If not, they will stay undefined.
-- `allow` : optional - specifies whether this mapping object is allowed to create new projects in `projects.json`,  to update existing ones, or both. Default value is 'update'.
+   Missing NumPEx catalog properties will not be fetched from the JSON source. If they are defined in `projects.json` their value will be preserved. If not, they will stay undefined.
+- `allow` : optional - specifies whether this mapping object is allowed to create new projects in the NumPEx software catalog,  to update existing ones, or both. Default value is 'update'.
 - `_comment` : optional - some human-readable comment, ignored by the script.
 
 > [!Note]
 >1. Each mapping object must contain at least one of the two optional properties `mappingRef` and `fields`. In case both properties are defined, then the custom mapping defined in `fields` takes precedence. 
+>
 >2. Multiple mapping objects may refer to the same project (i.e. have an identical `name` property).  This can be useful if you want to combine multiple metadata sources for your project. The script does process the mapping objects in their order of appearance in the `mapping.json` file - if the same NumPEx Catalog property is mapped multiple times for a given project, the latter mapping overrides earlier ones.
+>
 >3. It is also possible to have a single `source` file aggregating metadata for multiple projects. You only need to omit the `name` property in the mapping object, to structure the `source` file as an array of objects, one per project, and then rely on the mapping process to correctly fetch the `name` for each project.
+
 
 
 ## Usage Examples 
