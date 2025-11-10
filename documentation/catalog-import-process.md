@@ -85,7 +85,7 @@ This file must contains one `projects` property, which is an array of mapping ob
    - on right side, value of the property is a [Jq](https://jqlang.org/) query to be applied on the external JSON source in order to retrieve the corresponding NumPEx property. Note that Jq supports complex queries, possibly much more powerful than just selecting one specific field from the extternal JSON source - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 
    Missing NumPEx catalog properties will not be fetched from the external JSON source. If they are defined in `projects.json` their value will be preserved. If not, they will stay undefined.
-- `allow` : optionnal - specifies whether this mapping object is allowed to create new projects in `projects.json`,  update existing ones, or both. Default value is 'update'.
+- `allow` : optionnal - specifies whether this mapping object is allowed to create new projects in `projects.json`,  to update existing ones, or both. Default value is 'update'.
 
 > [!Note]
 >1. Each mapping object must contain at least one of the two optional properties `mappingRef` and `fields`. In case both optional properties are defined, then the custom mapping defined in `fields` takes precedence. 
@@ -122,6 +122,7 @@ And before initiating the _pull request_, you must also update the `main-list/ma
     {
       "name": "My Super Software",
       "source": "https://url.to.your.repo/codemeta.json",
+      "allow": "update",
       "fields": 
         {
           "description":  ".description",
@@ -133,6 +134,7 @@ And before initiating the _pull request_, you must also update the `main-list/ma
 }
 ~~~~
 This gives the instructions to the CI system where to fetch the metadata for your project, and how to retrieve the fields needed for the SW Catalog. The fact that neither `guix_package` nor `spack_package` properties are defined indicates that these properties will not be updated automatically ; the values you manually edited in `main-list/mapping.json` are preserved.
+The `allow` property tells the script that we expect an existing entry with that name to be already present in the `main-list/projects.json`, and that an error shall be triggered otherwise. That prevents an incorrect behaviour in case someone would latter delete the project entry in the `main-list/projects.json` but forget to delete the correspond entry in `mapping.json` : without that protection the script would silently create a new entry with the specified `fields` mapping, leading to incomplete presentation of the project in the catalog.
 
 After the submission is accepted, **automatic updates of the SW Catalog with the latest versions of your source metadata file will be performed daily.**
 

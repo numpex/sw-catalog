@@ -1,4 +1,5 @@
 {
+  "name": ".name",
   "description": ".description",
   "discussion": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:discussion\") | .url",
   "documentation": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:documentation\") | .url",
