@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 import csv, json, sys, argparse, io
+from urllib.parse import urlparse
+from urllib.request import urlopen
 
 def clean_cell(v):
     if v is None:
@@ -51,7 +53,7 @@ def main(fin, skip_blocks, verbose):
     if verbose:
         print(f"[header] {headers}", file=sys.stderr)
 
-    # --- 3) Process next blocks until empty block or end of file ---
+    # --- 3) Process next blocks until empty block or EOF ---
     for row in reader:
         if row_is_empty(row):
             if verbose:
@@ -76,23 +78,42 @@ def main(fin, skip_blocks, verbose):
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
 
+def open_input(source):
+    """Return a text file-like object for:
+       - "-" (stdin)
+       - local file path
+       - http(s) URL
+    """
+    # Is it a URL?
+    parsed = urlparse(source)
+    if parsed.scheme in ("http", "https"):
+        resp = urlopen(source)
+        # urlopen gives bytes → wrap as text
+        return io.TextIOWrapper(resp, encoding="utf-8", newline="")
+
+    # Stdin?
+    if source == "-":
+        return io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", newline="")
+
+    # Local file
+    return open(source, "r", encoding="utf-8", newline="")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument(
         "--skip", "-s", type=int, default=0,
         help="Number of CSV blocks to be skipped before header (default: 0)"
     )
-    ap.add_argument("infile", help="CSV file, or '-' for stdin")
+    ap.add_argument("infile", help="CSV file, URL, or '-' for stdin")
     ap.add_argument("--verbose", "-v", action="store_true")
     args = ap.parse_args()
 
-    if args.infile == "-":
-        fin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", newline="")
-    else:
-        fin = open(args.infile, "r", encoding="utf-8", newline="")
-
+    fin = open_input(args.infile)
     try:
         main(fin, args.skip, args.verbose)
     finally:
-        if args.infile != "-":
+        # Closing only if it's a local file
+        if hasattr(fin, "close") and args.infile not in ("-",):
+            # urlopen() also returns a closable object
             fin.close()
