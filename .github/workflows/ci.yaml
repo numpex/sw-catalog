@@ -32,6 +32,16 @@ jobs:
         if: false   # 👈 disables this step as Jq appears to be already installed
         run: sudo apt-get update && sudo apt-get install -y jq  
 
+      - name: ❄️ Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: 0️⃣ Import bunch of metadata from Google sheets (Exa-DoST)
+        run: |
+          mkdir snapshot
+          touch snapshot/test
+
       - name: 1️⃣ Validate input Json files
         run: |
           echo "Checking projects.json schema..."
@@ -54,11 +64,6 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/mapping-schema.json ./main-list/mapping.json
            
-      - name: ❄️ Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-   
       - name: 2️⃣ Regenerate catalog
         run: |
           # At the moment we set conservative mode in all cases so that the pipeline will fail if something goes wrong
@@ -87,6 +92,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Regenerate projects catalog via CI"
+          add-paths: "main-list"
           branch: ci/generated-projects
           base: ${{ github.ref_name }}
           title: "Regenerate projects catalog via CI"
