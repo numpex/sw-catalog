@@ -74,7 +74,7 @@ This file must contains one `projects` property, which is an array of mapping ob
    The source JSON file may contain either one JSON object or an array of JSON objects. In the latter case, the script loops over every JSON object sequentially, and for each:
    1.  applies the mapping for that object according to `mappingRef` or `fields` (see below)
    2.  updates the corresponding project in the NumPEx software catalog
-- `name` : optional - the name of the project to be updated in in the NumPEx software catalog. If this property is omitted, the script searches for a property called `name` across the fields fetched from the JSON source at the mapping step, and uses its value instead. 
+- `name` : optional - the name of the project to be updated in in the NumPEx software catalog. If this property is omitted, the script searches for a property called `name` across the fields fetched from the JSON source during the mapping step, and uses its value instead. See note 3 below.
 - `mappingRef` : optional - the URL of a standard mapping among the following ones:
 
    | URL | Comment |
@@ -86,8 +86,8 @@ This file must contains one `projects` property, which is an array of mapping ob
    - on right side, value of the property is a [Jq](https://jqlang.org/) query to be applied on the JSON source in order to retrieve the corresponding NumPEx property. Note that Jq supports complex queries, possibly much more powerful than just selecting one specific field from the JSON source - see a tutorial [here](https://www.baeldung.com/linux/jq-command-json).
 
    Missing NumPEx catalog properties will not be fetched from the JSON source. If they are defined in `projects.json` their value will be preserved. If not, they will stay undefined.
-- `allow` : optional - specifies whether this mapping object is allowed to create new projects in the NumPEx software catalog,  to update existing ones, or both. Default value is 'update'.
-- `_comment` : optional - some human-readable comment, ignored by the script.
+- `allow` : optional - specifies whether this mapping object is allowed to create new projects in the NumPEx software catalog (`"create"`),  to update existing ones (`"update"`), or both (`"both"`). Default value is `"update"`.
+- `_comment` : optional - human-readable comments, ignored by the script.
 
 > [!Note]
 >1. Each mapping object must contain at least one of the two optional properties `mappingRef` and `fields`. In case both properties are defined, then the custom mapping defined in `fields` takes precedence. 
