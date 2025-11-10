@@ -40,7 +40,8 @@ jobs:
       - name: 0️⃣ Import bunch of metadata from Google sheets (Exa-DoST)
         run: |
           mkdir snapshot
-          touch snapshot/test
+          python ./scripts/csv_to_json.py --skip 2 "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9DGqlBxQyV3ZqjGT_SuT2hIgEMK_wd4uERRXvPLU8ClzvoDJ8NODjem49krTh2MKZH3O2J29_znFk/pub?output=csv"  --output snapshot/PC3.json --verbose
+          cat snapshot/PC3.json
 
       - name: 1️⃣ Validate input Json files
         run: |

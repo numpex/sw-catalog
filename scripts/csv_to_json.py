@@ -27,7 +27,6 @@ def row_is_empty(row):
 
 def main(fin, skip_blocks, verbose):
     reader = csv.reader(fin)
-
     out = []
 
     # --- 1) Skip unwanted blocks ---
@@ -36,8 +35,7 @@ def main(fin, skip_blocks, verbose):
         try:
             row = next(reader)
         except StopIteration:
-            print("[]")
-            return
+            return []  # empty output
         if verbose:
             print(f"[skip] bloc {skipped+1}: {row}", file=sys.stderr)
         skipped += 1
@@ -46,8 +44,7 @@ def main(fin, skip_blocks, verbose):
     try:
         header_row = next(reader)
     except StopIteration:
-        print("[]")
-        return
+        return []
 
     headers = [h.strip() for h in header_row]
     if verbose:
@@ -75,7 +72,7 @@ def main(fin, skip_blocks, verbose):
 
         out.append(obj)
 
-    print(json.dumps(out, ensure_ascii=False, indent=2))
+    return out
 
 
 def open_input(source):
@@ -84,36 +81,34 @@ def open_input(source):
        - local file path
        - http(s) URL
     """
-    # Is it a URL?
     parsed = urlparse(source)
     if parsed.scheme in ("http", "https"):
         resp = urlopen(source)
-        # urlopen gives bytes → wrap as text
         return io.TextIOWrapper(resp, encoding="utf-8", newline="")
 
-    # Stdin?
     if source == "-":
         return io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", newline="")
 
-    # Local file
     return open(source, "r", encoding="utf-8", newline="")
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument(
-        "--skip", "-s", type=int, default=0,
-        help="Number of CSV blocks to be skipped before header (default: 0)"
-    )
+    ap.add_argument("--skip", "-s", type=int, default=0,
+                    help="Number of CSV blocks to skip before header")
     ap.add_argument("infile", help="CSV file, URL, or '-' for stdin")
+    ap.add_argument("--output", "-o", required=True,
+                    help="Output JSON file path")
     ap.add_argument("--verbose", "-v", action="store_true")
     args = ap.parse_args()
 
     fin = open_input(args.infile)
     try:
-        main(fin, args.skip, args.verbose)
+        json_data = main(fin, args.skip, args.verbose)
     finally:
-        # Closing only if it's a local file
         if hasattr(fin, "close") and args.infile not in ("-",):
-            # urlopen() also returns a closable object
             fin.close()
+
+    # --- Write JSON output to file ---
+    with open(args.output, "w", encoding="utf-8") as fout:
+        fout.write(json.dumps(json_data, ensure_ascii=False, indent=2))
