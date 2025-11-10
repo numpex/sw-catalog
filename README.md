@@ -33,26 +33,20 @@ In case you have already a Codemeta file in your project repo, we offer an easy 
 
 The prerequisite is that you ensure your Codemeta file adheres to the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md).  Once this is done, you can proceed with the submission workflow documented above, with the only exception of step 4, which should be replaced by:
 
-4. a. Update `main-list/mapping.json` in your fork, by adding an entry in the `projects` property for each project you want to include :
+4. Update `main-list/mapping.json` in your fork, by adding an entry in the `projects` property for each project you want to include :
 
 ~~~~json
         {
-            "name": "My Super Software",
             "source": "https://url.to.your.repo/codemeta.json",
-            "mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json"
+            "mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
+            "allow": "create"
         }
 ~~~~     
 
-This specifies the location of the Codemeta file for your project, and indicates that the standard NumPEx<>Codemeta mapping rules should be applied.
+   This specifies the location of the Codemeta file for your project, indicates that the standard NumPEx<>Codemeta mapping rules should be applied and that only the "creation" of a new project in the catalog is allowed : this means if someone else already registered a project with the same name in the NumPEx catalog, the script will not just update the existing entry with your new metadata (which would cause a big mess), but trigger an error instead.
 
-4. b. Execute the following commands, from the root of the `sw-catalog` folder:
-~~~~bash
-cd main-list
-python3 ../scripts/update_projects.py --strict --fail-on-missing --inplace mapping.json projects.json
-~~~~
-This triggers the initial import process (i.e. fetch your codemeta and apply the mapping rules to create a new entry in the NumPEx catalog). In case of successful completion, a new catalog entry containing the description of your project is appended to the `main-list/projects.json` file.
 
-After the submission is accepted,  **the CI system will daily fetch your codemeta file and automatically update the SW Catalog according to the changes**.
+After the submission is accepted,  **the CI system will daily fetch your codemeta file and automatically update the SW Catalog according to the latest content**.
 
 > [!NOTE]
 > If you are storing your project metadata in a JSON format which is not Codemeta, or if for some reason you are not willing to apply the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md), you can still benefit from the automated import workflow described above, only with some manual configuration. See [here](./documentation/catalog-import-process.md.)
