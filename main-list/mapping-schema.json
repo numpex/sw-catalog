@@ -18,12 +18,17 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "The project identifier or display name."
+          "description": "Optional project name. If omitted, it must be provided by the extracted fields."
         },
         "source": {
           "type": "string",
           "format": "uri",
           "description": "URL of the CodeMeta or JSON file to harvest."
+        },
+        "allow": {
+          "type": "string",
+          "enum": ["create", "update", "both"],
+          "description": "Specifies whether this mapping is allowed to create new projects, update existing ones, or both. Default is 'update'."
         },
         "mappingRef": {
           "type": "string",
@@ -39,7 +44,7 @@
           "description": "Custom field extraction rules using jq queries."
         }
       },
-      "required": ["name", "source"],
+      "required": ["source"],
       "oneOf": [
         { "required": ["mappingRef"] },
         { "required": ["fields"] }

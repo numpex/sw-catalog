@@ -122,6 +122,83 @@ def load_mapping_fields(mapping_ref, strict=False):
     return None
 
 
+def process_project_mapping(proj_cfg, existing_projects, args):
+    """Process a single mapping entry (may produce multiple projects)."""
+    source = proj_cfg.get("source")
+    fields = proj_cfg.get("fields", {})
+    mapping_ref = proj_cfg.get("mappingRef")
+    allow = proj_cfg.get("allow", "update")    # "Update" is the default value
+
+    if not source:
+        log("warn", f"Skipping invalid mapping entry without source: {proj_cfg}")
+        return
+
+    # Load mappingRef if provided
+    if mapping_ref and fields:
+        log("warn", f"Mapping defines both 'mappingRef' and 'fields'; using 'fields' and ignoring mappingRef.")
+    elif mapping_ref:
+        fields = load_mapping_fields(mapping_ref, strict=args.strict)
+        if not fields:
+            log("warn", f"Could not load mappingRef for mapping with source {source}; skipping.")
+            return
+    elif not fields:
+        log("warn", f"Mapping for source {source} has neither 'fields' nor 'mappingRef'; skipping.")
+        return
+
+    json_data = fetch(source, strict=args.strict)
+    if not json_data:
+        return
+
+    # Parse JSON once to detect list vs single object
+    try:
+        parsed = json.loads(json_data)
+    except json.JSONDecodeError as e:
+        log("error", f"Invalid JSON from source {source}: {e}")
+        if args.strict:
+            sys.exit(1)
+        return
+
+    # Always handle as list (even single object)
+    items = parsed if isinstance(parsed, list) else [parsed]
+
+    for idx, item in enumerate(items):
+        extracted = extract_fields(json.dumps(item), fields, fail_on_missing=args.fail_on_missing)
+        if not extracted:
+            continue
+
+        name = proj_cfg.get("name") or extracted.get("name")
+        if not name:
+            log("error", f"No 'name' found for item #{idx} in source {source}.")
+            if args.strict:
+                sys.exit(1)
+            continue
+
+        existing_entry = find_project(existing_projects, name)
+        exists = existing_entry is not None
+
+        if exists and allow not in ("both", "update"):
+            log("error", f"Project '{name}' exists but mapping does not allow updates (allow={allow}).")
+            if args.strict:
+                sys.exit(1)
+            continue
+        if not exists and allow not in ("both", "create"):
+            log("error", f"Project '{name}' does not exist but mapping does not allow creation (allow={allow}).")
+            if args.strict:
+                sys.exit(1)
+            continue
+
+        log("info", f"Processing project '{name}' from source {source}")
+        if exists:
+            update_project(existing_entry, extracted)
+        else:
+            log("info", f"Adding new project {name}")
+            # Ensure 'name' appears only once and matches the chosen value
+            if "name" in extracted:
+                extracted.pop("name")
+            new_entry = {"name": name, **extracted}
+            existing_projects.append(new_entry)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Update an existing projects.json file using external JSON file (e.g. Codemeta) defined in a mapping file."
@@ -156,43 +233,7 @@ def main():
 
     # Apply updates
     for proj_cfg in projects_cfg:
-        name = proj_cfg.get("name")
-        source = proj_cfg.get("source")
-        fields = proj_cfg.get("fields", {})
-        mapping_ref = proj_cfg.get("mappingRef")
-
-        if not name or not source:
-            log("warn", f"Skipping invalid mapping entry: {proj_cfg}")
-            continue
-
-        # Load mappingRef if provided
-        if mapping_ref and fields:
-            log("warn", f"Project {name} defines both 'mappingRef' and 'fields'; using 'fields' and ignoring mappingRef.")
-        elif mapping_ref:
-            fields = load_mapping_fields(mapping_ref, strict=args.strict)
-            if not fields:
-                log("warn", f"Could not load mappingRef for project {name}; skipping.")
-                continue
-        elif not fields:
-            log("warn", f"Project {name} has neither 'fields' nor 'mappingRef'; skipping.")
-            continue
-
-        json_data = fetch(source, strict=args.strict)
-        if not json_data:
-            continue
-
-        log("info", f"Start updating fields for project {name} from source {source}")
-        extracted = extract_fields(json_data, fields, fail_on_missing=args.fail_on_missing)
-        if not extracted:
-            continue
-
-        existing_entry = find_project(existing_projects, name)
-        if existing_entry:
-            update_project(existing_entry, extracted)
-        else:
-            log("info", f"Adding new project {name}")
-            new_entry = {"name": name, **extracted}
-            existing_projects.append(new_entry)
+        process_project_mapping(proj_cfg, existing_projects, args)
 
     # Optional schema validation
     if args.schema:
