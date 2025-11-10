@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import os
 import subprocess
 import sys
 from urllib.request import urlopen, Request
@@ -12,31 +13,88 @@ except ImportError:
     validate = None
 
 
+# ------------------------------------------------------------
+# Logging
+# ------------------------------------------------------------
 def log(level, msg):
     print(f"[{level.upper():7}] {msg}")
 
 
-def fetch(url: str, strict=False):
-    """Download a JSON file from the given URL."""
-    log("info", f"Fetching {url}")
+# ------------------------------------------------------------
+# Repo root detection: walk upward until a .git file or folder
+# ------------------------------------------------------------
+def find_repo_root(start_dir):
+    current = os.path.abspath(start_dir)
+    while True:
+        if os.path.exists(os.path.join(current, ".git")):
+            return current
+        parent = os.path.dirname(current)
+        if parent == current:
+            return None  # filesystem root reached
+        current = parent
+
+
+# ------------------------------------------------------------
+# Fetch JSON from remote or local file
+# ------------------------------------------------------------
+def fetch(source: str, repo_root: str, strict=False):
+    """
+    Retrieve JSON from:
+      - HTTP(S) URL   → via GET
+      - local:...     → repo-local JSON file
+    """
+    # ---- LOCAL MODE -----------------------------------------------------
+    if source.startswith("local:"):
+        rel_path = source[len("local:"):]
+        local_path = os.path.normpath(os.path.join(repo_root, rel_path))
+
+        # Security check: stay inside repo
+        if not local_path.startswith(repo_root):
+            log("error", f"Forbidden local path outside repo: {rel_path}")
+            if strict:
+                sys.exit(1)
+            return None
+
+        if not os.path.isfile(local_path):
+            log("warn", f"Local source not found: {local_path}")
+            if strict:
+                sys.exit(1)
+            return None
+
+        try:
+            with open(local_path, "r") as f:
+                data = f.read()
+            json.loads(data)  # validation
+            return data
+        except Exception as e:
+            log("warn", f"Failed to read local file {local_path}: {e}")
+            if strict:
+                sys.exit(1)
+            return None
+
+    # ---- REMOTE MODE -----------------------------------------------------
     try:
-        req = Request(url, headers={"User-Agent": "projectmeta-fetcher"})
+        log("info", f"Fetching {source}")
+        req = Request(source, headers={"User-Agent": "projectmeta-fetcher"})
         with urlopen(req, timeout=10) as resp:
             data = resp.read().decode()
-        json.loads(data)  # basic JSON validation
+        json.loads(data)  # validation
         return data
     except (HTTPError, URLError) as e:
-        log("warn", f"Failed to fetch {url}: {e}")
+        log("warn", f"Failed to fetch {source}: {e}")
     except json.JSONDecodeError:
-        log("warn", f"Invalid JSON at {url}")
+        log("warn", f"Invalid JSON at {source}")
     except Exception as e:
-        log("warn", f"Unexpected error while fetching {url}: {e}")
+        log("warn", f"Unexpected error while fetching {source}: {e}")
 
     if strict:
         sys.exit(1)
     return None
 
 
+# ------------------------------------------------------------
+# jq utilities
+# ------------------------------------------------------------
 def run_jq(expr, json_data):
     """Run jq expression on given JSON data."""
     try:
@@ -76,8 +134,10 @@ def extract_fields(json_data, fields, fail_on_missing=False):
     return result
 
 
+# ------------------------------------------------------------
+# Project lookup and update logic
+# ------------------------------------------------------------
 def find_project(existing_projects, name):
-    """Return reference to project dict if exists, else None."""
     for proj in existing_projects:
         if proj.get("name") == name:
             return proj
@@ -85,7 +145,6 @@ def find_project(existing_projects, name):
 
 
 def update_project(existing, updates):
-    """Merge new fields into existing project entry."""
     for k, v in updates.items():
         if k == "name":
             continue
@@ -99,7 +158,7 @@ def update_project(existing, updates):
 
 
 def load_mapping_fields(mapping_ref, strict=False):
-    """Load an external mapping definition (fields) from a remote URL."""
+    """Load external mapping definition."""
     log("info", f"Loading mappingRef from {mapping_ref}")
     if not (mapping_ref.startswith("http://") or mapping_ref.startswith("https://")):
         log("error", f"mappingRef must be an HTTP(S) URL, got: {mapping_ref}")
@@ -107,13 +166,12 @@ def load_mapping_fields(mapping_ref, strict=False):
             sys.exit(1)
         return None
 
-    data = fetch(mapping_ref, strict=strict)
+    data = fetch(mapping_ref, repo_root="", strict=strict)
     if not data:
         return None
 
     try:
         mapping = json.loads(data)
-        # assume top-level keys are field definitions (target → jq expr)
         return {k: v for k, v in mapping.items() if isinstance(v, str)}
     except json.JSONDecodeError as e:
         log("warn", f"Invalid JSON in mappingRef {mapping_ref}: {e}")
@@ -122,34 +180,35 @@ def load_mapping_fields(mapping_ref, strict=False):
     return None
 
 
-def process_project_mapping(proj_cfg, existing_projects, args):
-    """Process a single mapping entry (may produce multiple projects)."""
+# ------------------------------------------------------------
+# Process one mapping item (may produce multiple projects)
+# ------------------------------------------------------------
+def process_project_mapping(proj_cfg, existing_projects, args, repo_root):
     source = proj_cfg.get("source")
     fields = proj_cfg.get("fields", {})
     mapping_ref = proj_cfg.get("mappingRef")
-    allow = proj_cfg.get("allow", "update")    # "Update" is the default value
+    allow = proj_cfg.get("allow", "update")  # default = update
 
     if not source:
-        log("warn", f"Skipping invalid mapping entry without source: {proj_cfg}")
+        log("warn", f"Skipping mapping entry without source: {proj_cfg}")
         return
 
-    # Load mappingRef if provided
+    # fields / mappingRef handling
     if mapping_ref and fields:
-        log("warn", f"Mapping defines both 'mappingRef' and 'fields'; using 'fields' and ignoring mappingRef.")
+        log("warn", f"Mapping defines both 'mappingRef' and 'fields'; using 'fields'.")
     elif mapping_ref:
         fields = load_mapping_fields(mapping_ref, strict=args.strict)
         if not fields:
-            log("warn", f"Could not load mappingRef for mapping with source {source}; skipping.")
+            log("warn", f"Could not load mappingRef for {source}; skipping.")
             return
     elif not fields:
         log("warn", f"Mapping for source {source} has neither 'fields' nor 'mappingRef'; skipping.")
         return
 
-    json_data = fetch(source, strict=args.strict)
+    json_data = fetch(source, repo_root, strict=args.strict)
     if not json_data:
         return
 
-    # Parse JSON once to detect list vs single object
     try:
         parsed = json.loads(json_data)
     except json.JSONDecodeError as e:
@@ -158,7 +217,7 @@ def process_project_mapping(proj_cfg, existing_projects, args):
             sys.exit(1)
         return
 
-    # Always handle as list (even single object)
+    # Always treat as list
     items = parsed if isinstance(parsed, list) else [parsed]
 
     for idx, item in enumerate(items):
@@ -166,9 +225,10 @@ def process_project_mapping(proj_cfg, existing_projects, args):
         if not extracted:
             continue
 
+        # Optional name
         name = proj_cfg.get("name") or extracted.get("name")
         if not name:
-            log("error", f"No 'name' found for item #{idx} in source {source}.")
+            log("error", f"No 'name' for item #{idx} in source {source}")
             if args.strict:
                 sys.exit(1)
             continue
@@ -176,56 +236,66 @@ def process_project_mapping(proj_cfg, existing_projects, args):
         existing_entry = find_project(existing_projects, name)
         exists = existing_entry is not None
 
+        # Allow policy
         if exists and allow not in ("both", "update"):
-            log("error", f"Project '{name}' exists but mapping does not allow updates (allow={allow}).")
+            log("error", f"Project '{name}' exists but allow={allow} forbids update.")
             if args.strict:
                 sys.exit(1)
             continue
         if not exists and allow not in ("both", "create"):
-            log("error", f"Project '{name}' does not exist but mapping does not allow creation (allow={allow}).")
+            log("error", f"Project '{name}' does not exist but allow={allow} forbids creation.")
             if args.strict:
                 sys.exit(1)
             continue
 
-        log("info", f"Processing project '{name}' from source {source}")
+        # Update or create
         if exists:
+            log("info", f"Updating project {name}")
             update_project(existing_entry, extracted)
         else:
             log("info", f"Adding new project {name}")
-            # Ensure 'name' appears only once and matches the chosen value
             if "name" in extracted:
                 extracted.pop("name")
             new_entry = {"name": name, **extracted}
             existing_projects.append(new_entry)
 
 
+# ------------------------------------------------------------
+# Main
+# ------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
-        description="Update an existing projects.json file using external JSON file (e.g. Codemeta) defined in a mapping file."
+        description="Update an existing projects.json from external sources using a mapping file."
     )
     parser.add_argument("mapping", help="Path to mapping JSON file")
-    parser.add_argument("projects", help="Path to existing projects.json file to update")
-    parser.add_argument("--schema", help="Optional schema file for validation")
-    parser.add_argument("--strict", action="store_true", help="Fail on fetch or JSON errors")
-    parser.add_argument("--fail-on-missing", action="store_true", help="Fail if a jq field is missing")
-    parser.add_argument("--inplace", action="store_true", help="Overwrite the existing projects.json in place")
-    parser.add_argument("-o", "--output", help="Write to this file instead of overwriting projects.json")
+    parser.add_argument("projects", help="Path to existing projects.json file")
+    parser.add_argument("--schema", help="Optional validation schema")
+    parser.add_argument("--strict", action="store_true", help="Exit on fetch/JSON errors")
+    parser.add_argument("--fail-on-missing", action="store_true", help="Fail if jq field is missing")
+    parser.add_argument("--inplace", action="store_true", help="Overwrite the projects.json file")
+    parser.add_argument("-o", "--output", help="Output file instead of overwriting")
     args = parser.parse_args()
 
-    # Load mapping configuration file
+    # Load mapping
     try:
         with open(args.mapping) as f:
             mapping = json.load(f)
     except json.JSONDecodeError as e:
-        log("error", f"Invalid JSON in mapping file {args.mapping}: {e}")
+        log("error", f"Invalid mapping JSON: {e}")
         sys.exit(1)
 
-    # Load existing projects.json
+    # Detect repo root
+    repo_root = find_repo_root(os.path.dirname(os.path.abspath(args.mapping)))
+    if not repo_root:
+        repo_root = os.path.dirname(os.path.abspath(args.mapping))
+    log("info", f"Repo root: {repo_root}")
+
+    # Load existing projects
     try:
         with open(args.projects) as f:
             projects_data = json.load(f)
     except json.JSONDecodeError as e:
-        log("error", f"Invalid JSON in projects file {args.projects}: {e}")
+        log("error", f"Invalid projects JSON: {e}")
         sys.exit(1)
 
     existing_projects = projects_data.get("projects", [])
@@ -233,12 +303,12 @@ def main():
 
     # Apply updates
     for proj_cfg in projects_cfg:
-        process_project_mapping(proj_cfg, existing_projects, args)
+        process_project_mapping(proj_cfg, existing_projects, args, repo_root)
 
-    # Optional schema validation
+    # Schema validation
     if args.schema:
         if not validate:
-            log("warn", "jsonschema not installed, skipping validation.")
+            log("warn", "jsonschema not installed")
         else:
             with open(args.schema) as f:
                 schema = json.load(f)
@@ -250,13 +320,13 @@ def main():
                 if args.strict:
                     sys.exit(1)
 
-    # Write results
+    # Output
     output_path = args.projects if args.inplace or not args.output else args.output
     with open(output_path, "w") as f:
         json.dump(projects_data, f, indent=2)
         f.write("\n")
 
-    log("info", f"Updated {output_path} with {len(projects_data.get('projects', []))} projects.")
+    log("info", f"Updated {output_path} with {len(existing_projects)} projects.")
 
 
 if __name__ == "__main__":

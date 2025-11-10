@@ -22,8 +22,8 @@
         },
         "source": {
           "type": "string",
-          "format": "uri",
-          "description": "URL of the CodeMeta or JSON file to harvest."
+          "description": "URL or local:relative/path.json pointing to the CodeMeta or JSON file to harvest",
+          "pattern": "^(https?://|local:).+"
         },
         "allow": {
           "type": "string",
