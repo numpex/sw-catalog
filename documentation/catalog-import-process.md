@@ -86,6 +86,7 @@ This file must contains one `projects` property, which is an array of mapping ob
 
    Missing NumPEx catalog properties will not be fetched from the external JSON source. If they are defined in `projects.json` their value will be preserved. If not, they will stay undefined.
 - `allow` : optionnal - specifies whether this mapping object is allowed to create new projects in `projects.json`,  to update existing ones, or both. Default value is 'update'.
+- `_comment` : optionnal - some human-readable comment, ignored by the script.
 
 > [!Note]
 >1. Each mapping object must contain at least one of the two optional properties `mappingRef` and `fields`. In case both optional properties are defined, then the custom mapping defined in `fields` takes precedence. 

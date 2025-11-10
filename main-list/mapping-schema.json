@@ -42,7 +42,11 @@
             "description": "A jq expression extracting the corresponding property from the source file."
           },
           "description": "Custom field extraction rules using jq queries."
-        }
+        },
+        "_comment": {
+           "type": "string",
+           "description": "Optional human-readable comment. Ignored by the script."
+        } 
       },
       "required": ["source"],
       "oneOf": [
