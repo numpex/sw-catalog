@@ -1,5 +1,5 @@
 # Using Codemeta to feed the NumPEx Software Catalog
-![Static Badge](https://img.shields.io/badge/Status-Draft-orange?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/Status-Released-green?style=for-the-badge)
 
 **NumPEx Software Catalog** is a living list of software projects adhering to the [NumPEx software integration guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html). 
 
@@ -133,6 +133,7 @@ The following table presents the overall resulting mapping from Codemeta fila  t
 | _Spack Package_ |  `."numpex-catalog:annotatedLink"[] \| select(.roleName == "numpex-catalog:spack_package") \| .url`  | 
 
 [^1]: however due to the lack of semantics associated to the individual URLs, we can hardly imagine any useful processing of the `relatedLink` property, except presenting all the links "in bulk" to the user. That was the main reason for introducing annotated links.
+
 
 
 
