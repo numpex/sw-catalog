@@ -1,16 +1,11 @@
 {
     "$schema": "./mapping-schema.json",
     "projects": [
-        {
-            "name": "StarPU",
+		{
             "source": "https://gitlab.inria.fr/starpu/starpu/-/raw/master/codemeta.json",
-            "fields": {
-                "description": ".description",
-                "discussion": ".softwareSuggestions",
-                "documentation": ".softwareHelp",
-		        "guix_package": ".installURL[] | select(.name == \"guix\") | .url",
-		        "spack_package": ".installURL[] | select(.name == \"spack\") | .url"
-            }
-        }
+			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
+			"allow": "both"
+    	}
     ]  
+
 }
