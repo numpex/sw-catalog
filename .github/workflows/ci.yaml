@@ -3,11 +3,14 @@ name: ci
 on:
   push: 
     paths:
-      - "**/*.json"
-      - "**/*.yaml"
+      - "main-list/**/*.json"
+      - ".github/workflows/**/*.yaml"
+    branches: # Do not run on push event in case of a non-main branch (PR event will trigger the CI if the branch is associated to an open PR)
+      - main
   pull_request: 
     paths:
-      - "**/*.json"
+      - "main-list/**/*.json"
+      - ".github/workflows/**/*.yaml"
   schedule:
     # Daily at 01:00 UTC
     - cron: "0 1 * * *"      
@@ -28,6 +31,18 @@ jobs:
       - name: ❄️ Install jq
         if: false   # 👈 disables this step as Jq appears to be already installed
         run: sudo apt-get update && sudo apt-get install -y jq  
+
+      - name: ❄️ Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: 0️⃣ Import bunch of metadata from Google sheets (Exa-DoST)
+        if: false    # Temporarily disable - work in progress
+        run: |
+          mkdir snapshot
+          python ./scripts/csv_to_json.py --skip 2 "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9DGqlBxQyV3ZqjGT_SuT2hIgEMK_wd4uERRXvPLU8ClzvoDJ8NODjem49krTh2MKZH3O2J29_znFk/pub?output=csv"  --output snapshot/PC3.json --verbose
+          cat snapshot/PC3.json
 
       - name: 1️⃣ Validate input Json files
         run: |
@@ -51,11 +66,6 @@ jobs:
           nix run nixpkgs#check-jsonschema -- \
             --schemafile ./main-list/mapping-schema.json ./main-list/mapping.json
            
-      - name: ❄️ Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-   
       - name: 2️⃣ Regenerate catalog
         run: |
           # At the moment we set conservative mode in all cases so that the pipeline will fail if something goes wrong
@@ -84,6 +94,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Regenerate projects catalog via CI"
+          add-paths: "main-list"
           branch: ci/generated-projects
           base: ${{ github.ref_name }}
           title: "Regenerate projects catalog via CI"

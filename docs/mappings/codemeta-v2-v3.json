@@ -1,0 +1,8 @@
+{
+  "name": ".name",
+  "description": ".description",
+  "discussion": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:discussion\") | .url",
+  "documentation": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:documentation\") | .url",
+  "guix_package": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:guix_package\") | .url",
+  "spack_package": ".\"numpex-catalog:annotatedLink\"[] | select(.roleName == \"numpex-catalog:spack_package\") | .url"
+}

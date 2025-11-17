@@ -11,6 +11,6 @@
 		        "guix_package": ".installURL[] | select(.name == \"guix\") | .url",
 		        "spack_package": ".installURL[] | select(.name == \"spack\") | .url"
             }
-        }      
+        }
     ]  
 }

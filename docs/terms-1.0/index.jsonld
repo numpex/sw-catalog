@@ -1,0 +1,40 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "numpex-catalog": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld#",
+    "Role": "https://schema.org/Role",
+    "roleName": "https://schema.org/roleName",
+    "url": "https://schema.org/url"
+  },
+  "@id": "https://numpex.github.io/sw-catalog/terms-1.0/index.jsonld",
+  "@type": "rdfs:Resource",
+  "rdfs:label": "NumPEx Catalog Terms",
+  "rdfs:comment": "Vocabulary defining annotated links using Role objects.",
+
+  "numpex-catalog:annotatedLink": {
+    "@type": "rdf:Property",
+    "rdfs:label": "Annotated Link",
+    "rdfs:comment": "Structured mapping of URLs to their roles using Role objects."
+  },
+
+  "numpex-catalog:documentation": {
+    "@type": "rdf:Property",
+    "rdfs:label": "Documentation",
+    "rdfs:comment": "Links to project documentation."
+  },
+  "numpex-catalog:discussion": {
+    "@type": "rdf:Property",
+    "rdfs:label": "Discussion",
+    "rdfs:comment": "Links to project discussions or mailing lists."
+  },
+  "numpex-catalog:guix_package": {
+    "@type": "rdf:Property",
+    "rdfs:label": "Guix Package",
+    "rdfs:comment": "Links to the Guix package for this project."
+  },
+  "numpex-catalog:spack_package": {
+    "@type": "rdf:Property",
+    "rdfs:label": "Spack Package",
+    "rdfs:comment": "Links to the Spack package for this project."
+  }
+}

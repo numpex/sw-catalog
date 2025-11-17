@@ -1,44 +1,58 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$defs": {
-    "uri": {
-      "type": "string",
-      "format": "uri",
-      "pattern": "^(https?|http?)://"
-    }
-  },
+  "title": "NumPEx Software Catalog Mapping Schema",
+  "description": "Specifies how metadata should be extracted from Codemeta or other JSON file for each project.",
   "type": "object",
-  "required": [
-    "projects"
-  ],
+
   "properties": {
     "projects": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-            "name": {
-                "description": "The name of the project.",
-                "type": "string"
-            },
-            "source": {
-                "description": "The URL of the project's codemeta or source meta data.",
-                "$ref": "#/$defs/uri"
-            },
-            "fields": {
-                "type": "object",
-                "description": "A mapping of arbitrary field names to jq-like expressions.",
-                "additionalProperties": {
-                    "type": "string",
-                    "description": "An expression (e.g., jq path) for extracting data."
-                }
-            }
-        },  
-        "required": [
-          "name",
-          "source"
-        ]
-      }
+      "items": { "$ref": "#/$defs/project" }
+    }
+  },
+  "required": ["projects"],
+
+  "$defs": {
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Optional project name. If omitted, it must be provided by the extracted fields."
+        },
+        "source": {
+          "type": "string",
+          "description": "URL or local:relative/path.json pointing to the CodeMeta or JSON file to harvest",
+          "pattern": "^(https?://|local:).+"
+        },
+        "allow": {
+          "type": "string",
+          "enum": ["create", "update", "both"],
+          "description": "Specifies whether this mapping is allowed to create new projects, update existing ones, or both. Default is 'update'."
+        },
+        "mappingRef": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL of an external mapping definition file (e.g., standard Codemeta mapping)."
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "description": "A jq expression extracting the corresponding property from the source file."
+          },
+          "description": "Custom field extraction rules using jq queries."
+        },
+        "_comment": {
+           "type": "string",
+           "description": "Optional human-readable comment. Ignored by the script."
+        } 
+      },
+      "required": ["source"],
+      "oneOf": [
+        { "required": ["mappingRef"] },
+        { "required": ["fields"] }
+      ]
     }
   }
 }
