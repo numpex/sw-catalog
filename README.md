@@ -49,7 +49,7 @@ The prerequisite is that you ensure your Codemeta file adheres to the [NumPEx co
 After the submission is accepted,  **the CI system will daily fetch your codemeta file and automatically update the SW Catalog according to the latest content**.
 
 > [!NOTE]
-> If you are storing your project metadata in a JSON format which is not Codemeta, or if for some reason you are not willing to apply the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md), you can still benefit from the automated import workflow described above, only with some manual configuration. See [here](./documentation/catalog-import-process.md.)
+> If you are storing your project metadata in a JSON format which is not Codemeta, or if for some reason you are not willing to apply the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md), you can still benefit from the automated import workflow described above, only with some manual configuration. See [here](./documentation/catalog-import-process.md)
 
 
 ## Information for Maintainers
