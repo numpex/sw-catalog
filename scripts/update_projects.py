@@ -35,6 +35,36 @@ def find_repo_root(start_dir):
 
 
 # ------------------------------------------------------------
+# Robust fetch: in-memory cache + retries for remote URLs
+# ------------------------------------------------------------
+_FETCH_CACHE = {}
+
+def fetch_with_retry(url, retries=4, backoff=1.7, timeout=10):
+    """Fetch remote JSON with retry logic and caching."""
+    # Return cached value
+    if url in _FETCH_CACHE:
+        return _FETCH_CACHE[url]
+
+    last_exc = None
+    for attempt in range(retries):
+        try:
+            req = Request(url, headers={"User-Agent": "projectmeta-fetcher"})
+            with urlopen(req, timeout=timeout) as resp:
+                data = resp.read().decode()
+            # Validate JSON
+            json.loads(data)
+            _FETCH_CACHE[url] = data
+            return data
+        except Exception as e:
+            last_exc = e
+            wait = backoff ** attempt
+            log("warn", f"Fetch failed for {url}: {e}; retrying in {wait:.1f}s...")
+            time.sleep(wait)
+
+    log("error", f"Permanent failure fetching {url}: {last_exc}")
+    return None
+
+# ------------------------------------------------------------
 # Fetch JSON from remote or local file
 # ------------------------------------------------------------
 def fetch(source: str, repo_root: str, strict=False):
@@ -75,11 +105,7 @@ def fetch(source: str, repo_root: str, strict=False):
     # ---- REMOTE MODE -----------------------------------------------------
     try:
         log("info", f"Fetching {source}")
-        req = Request(source, headers={"User-Agent": "projectmeta-fetcher"})
-        with urlopen(req, timeout=10) as resp:
-            data = resp.read().decode()
-        json.loads(data)  # validation
-        return data
+        return fetch_with_retry(source)
     except (HTTPError, URLError) as e:
         log("warn", f"Failed to fetch {source}: {e}")
     except json.JSONDecodeError:
