@@ -56,14 +56,6 @@
       "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/freefem/package.py"
     },
     {
-      "description": "StarPU is a task-based runtime system for heterogeneous platforms coupling a performance modeling scheduler with a distributed shared-memory manager. It provides a framework for task scheduling on heterogeneous, accelerated platforms, together with an API for implementing various classes of scheduling algorithms. This scheduling framework jointly works with a distributed shared-memory manager to optimize task mappings and data transfers, and to overlap communications with computations.",
-      "discussion": "https://discord.gg/vKVJsuHB8U",
-      "documentation": "https://starpu.gitlabpages.inria.fr/doc.html",
-      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/storm.scm",
-      "name": "StarPU",
-      "spack_package": "https://github.com/spack/spack-packages/tree/develop/repos/spack_repo/builtin/packages/starpu/package.py"
-    },
-    {
       "description": "Composyx is a linear algebra modern C++ library focused on composability. Its purpose is to allow the user to express a large panel of numerical algorithms using a high-level interface to range from laptop prototypes to many node supercomputer parallel computations.",
       "discussion": "https://gitlab.inria.fr/composyx/composyx/-/issues",
       "documentation": "https://composyx.gitlabpages.inria.fr/composyx/",
@@ -93,21 +85,6 @@
       "name": "NewMadeleine",
       "guix_package": "https://hpc.guix.info/package/nmad-pukabi",
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/nmad/package.py"
-    },
-    {
-      "description": "EZTrace is a tool that automatically generates execution traces from HPC programs. It generates execution trace files that can be analyze or visualize in order to identify performance bottelnecks.",
-      "discussion": "https://gitlab.com/eztrace/eztrace/-/issues",
-      "documentation": "https://gitlab.com/eztrace/eztrace/-/tree/master/doc",
-      "name": "EZTrace",
-      "guix_package": "https://hpc.guix.info/package/eztrace",
-      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/eztrace/package.py"
-    },
-    {
-      "description": "Pallas is a trace format designed to help developers and researchers analyze the performance of parallel applications. Whether you're working with MPI, OpenMP, CUDA, or other parallel paradigms, Pallas is able to trace and analyze your application's behavior, even at larger scales. Pallas is a library offering a OTF2 interface, so that it can be used with any tracing tool relying on the OTF2 format.",
-      "discussion": "https://gitlab.inria.fr/pallas/pallas/-/issues",
-      "documentation": "https://pallas.gitlabpages.inria.fr/pallas/",
-      "name": "Pallas",
-      "guix_package": "https://hpc.guix.info/package/eztrace-pallas"
     }
   ]
 }
