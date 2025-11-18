@@ -347,7 +347,14 @@ def main():
                     sys.exit(1)
 
     # Output
-    output_path = args.projects if args.inplace or not args.output else args.output
+    if args.output:
+        output_path = args.output
+    elif args.inplace:
+        output_path = args.projects
+    else:
+        log("error", "No output generated. You must provide either --inplace or --output.")
+        sys.exit(1)
+        
     with open(output_path, "w") as f:
         json.dump(projects_data, f, indent=2)
         f.write("\n")
