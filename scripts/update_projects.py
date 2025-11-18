@@ -300,6 +300,7 @@ def main():
     parser.add_argument("--fail-on-missing", action="store_true", help="Fail if jq field is missing")
     parser.add_argument("--inplace", action="store_true", help="Overwrite the projects.json file")
     parser.add_argument("-o", "--output", help="Output file instead of overwriting")
+    parser.add_argument("--sort", action="store_true", help="Sort projects by their 'name' before output")
     args = parser.parse_args()
 
     # Load mapping
@@ -346,7 +347,16 @@ def main():
                 if args.strict:
                     sys.exit(1)
 
-    # Output
+    # Sort projects by name if requested
+    if args.sort:
+        try:
+            projects_data["projects"].sort(key=lambda p: p.get("name", ""))
+            log("info", "Projects sorted by name.")
+        except Exception as e:
+            log("error", f"Failed to sort projects: {e}")
+            sys.exit(1)
+            
+    # Generate output, either inplace or to a specified output file
     if args.output:
         output_path = args.output
     elif args.inplace:
