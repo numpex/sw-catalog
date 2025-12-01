@@ -85,6 +85,13 @@
       "name": "NewMadeleine",
       "guix_package": "https://hpc.guix.info/package/nmad-pukabi",
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/nmad/package.py"
+    },
+    {
+      "name": "Damaris",
+      "description": "Damaris is a middleware for asynchronous I/O, in situ data processing and visualization, targeting large-scale MPI-based HPC simulations.",
+      "documentation": "https://project.inria.fr/damaris/documentation/",
+      "discussion": "https://discord.gg/TuWxsVSrN2",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/damaris/package.py"
     }
   ]
 }
