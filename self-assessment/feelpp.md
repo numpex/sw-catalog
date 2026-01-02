@@ -51,9 +51,10 @@ Sources should be published under a clearly-identified free software license (pr
 * [x] FLOSS license (FSF/OSI conformant)
 * [ ] SPDX is used
 * [ ] REUSE is used
-  * OSS:: LGPL v*
-  * OSS:: GPL v*
 
+Licenses used:
+* LGPL-3.0-or-later (main license)
+* GPL-3.0-or-later (for some components)
 ## Minimal Documentation
 
 Basic documentation should be publicly available to facilitate user understanding and usage of the software.
