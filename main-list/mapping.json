@@ -19,7 +19,7 @@
 		{
             "source": "https://raw.githubusercontent.com/feelpp/feelpp/develop/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
-			"allow": "create"
+			"allow": "update"
     	}
     ]  
 
