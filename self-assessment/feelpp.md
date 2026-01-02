@@ -77,14 +77,14 @@ An open, public discussion channel must be provided that is easily accessible to
 Each repository should include metadata easing integration and publicity on a software list.
 
 * [x] The following metadata is available:
-  * Software name: ✅
-  * Description: ✅
-  * License: ✅
-  * Documentation URL: ✅
-  * Discussion channel URL: ✅
-  * Package repositories URLs: ✅
-  * Repository URL: ✅
-  * Autoevaluation using the list of criteria stated here: ✅
+  * Software name
+  * Description
+  * License
+  * Documentation URL
+  * Discussion channel URL
+  * Package repositories URLs
+  * Repository URL
+  * Autoevaluation using the list of criteria stated here
 * [ ] Uses codemeta format
 
 ## API Compatibility Information
