@@ -37,11 +37,16 @@ The prerequisite is that you ensure your Codemeta file adheres to the [NumPEx co
 
 ~~~~json
         {
-            "source": "https://url.to.your.repo/codemeta.json",
+            "source": "https://url.to.the.raw.file.endpoint.for.your.repo/codemeta.json",
             "mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
             "allow": "create"
         }
 ~~~~     
+> [!TIP]
+> Canonical raw file endpoint format depends on the hosting platform:
+> - Github: `raw.githubusercontent.com/<group>/<repo>/<branch>/<path/to/file>`
+> - Gitlab: `gitlab.com/<group>/<repo>/-/raw/<branch>/<path/to/file>` 
+> - Gitlab self-hosted, e.g Inria instance: `gitlab.inria.fr/<group>/<repo>/-/raw/<branch>/<path/to/file>` 
 
    This specifies the location of the Codemeta file for your project, indicates that the standard NumPEx<>Codemeta mapping rules should be applied and that only the "creation" of a new project in the catalog is allowed : this means if someone else already registered a project with the same name in the NumPEx catalog, the script will not just update the existing entry with your new metadata (which would cause a big mess), but trigger an error instead.
 
