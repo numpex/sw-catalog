@@ -122,6 +122,13 @@
       "documentation": "https://starpu.gitlabpages.inria.fr/doc.html",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/storm.scm",
       "spack_package": "https://github.com/spack/spack-packages/tree/develop/repos/spack_repo/builtin/packages/starpu/package.py"
+    },
+    {
+      "name": "samurai",
+      "description": "The use of mesh adaptation methods in numerical simulation allows to drastically reduce the memory footprint and the computational costs. There are different kinds of methods: AMR patch-based, AMR cell-based, multiresolution cell-based or point-based, ...\n\nDifferent open source software is available to the community to manage mesh adaptation: AMReX for patch-based AMR, p4est and pablo for cell-based adaptation.\n\nThe strength of samurai is that it allows to implement all the above mentioned mesh adaptation methods from the same data structure. The mesh is represented as intervals and a set algebra allows to efficiently search for subsets among these intervals. Samurai also offers a flexible and pleasant interface to easily implement numerical methods.",
+      "discussion": "https://github.com/hpc-maths/samurai/discussions",
+      "documentation": "https://hpc-math-samurai.readthedocs.io/",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/samurai/package.py"
     }
   ]
 }
