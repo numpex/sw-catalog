@@ -70,6 +70,13 @@
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/hawen.scm?ref_type=heads"
     },
     {
+      "name": "IOPS",
+      "description": "A generic benchmark orchestration framework for automated parametric experiments.",
+      "discussion": "https://gitlab.inria.fr/lgouveia/iops/-/issues",
+      "documentation": "https://lgouveia.gitlabpages.inria.fr/iops/",
+      "spack_package": "https://gitlab.inria.fr/lgouveia/iops-spack"
+    },
+    {
       "description": "Melissa is a file-avoiding, adaptive, fault-tolerant and elastic framework, to run large-scale sensitivity analysis or deep-surrogate training on supercomputers.",
       "discussion": "https://melissa.discourse.group/",
       "documentation": "https://melissa.gitlabpages.inria.fr/melissa/",
