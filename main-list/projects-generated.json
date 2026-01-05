@@ -41,7 +41,7 @@
       "spack_package": "https://github.com/spack/spack-packages/tree/develop/repos/spack_repo/builtin/packages/eztrace/package.py"
     },
     {
-      "description": "Feel++ is an Open-Source C++ library which allows to solve a large range of partial differential equations using Galerkin methods, e.g. finite element method, spectral element method, discontinuous Galerkin methods or reduced basis methods. Feel++ enables parallel computing in a seamless way and allows to solve large scale systems up to tens of thousands of cores.",
+      "description": "Feel++ is an open-source C++ framework for continuous and discontinuous Galerkin methods (FEM/SEM/DG/HDG) and reduced basis methods for parallel PDE simulation in 1D-3D. It includes toolboxes for multiphysics applications (CFD, CSM, heat transfer, FSI, thermo-electric, Maxwell) and model order reduction components.",
       "discussion": "https://join.slack.com/t/feelpp/shared_invite/zt-2qe0q9hw-4pVbhohCXUE6Po9Ma8dbiQ",
       "documentation": "https://docs.feelpp.org/home/index.html",
       "name": "Feel++",
@@ -68,6 +68,13 @@
       "documentation": "https://ffaucher.gitlab.io/hawen-website/",
       "name": "Hawen",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/inria/hawen.scm?ref_type=heads"
+    },
+    {
+      "name": "IOPS",
+      "description": "A generic benchmark orchestration framework for automated parametric experiments.",
+      "discussion": "https://gitlab.inria.fr/lgouveia/iops/-/issues",
+      "documentation": "https://lgouveia.gitlabpages.inria.fr/iops/",
+      "spack_package": "https://gitlab.inria.fr/lgouveia/iops-spack"
     },
     {
       "description": "Melissa is a file-avoiding, adaptive, fault-tolerant and elastic framework, to run large-scale sensitivity analysis or deep-surrogate training on supercomputers.",
