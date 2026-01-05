@@ -1,21 +1,26 @@
 {
-    "$schema": "./mapping-schema.json",
-    "projects": [
+	"$schema": "./mapping-schema.json",
+	"projects": [
 		{
-            "source": "https://gitlab.inria.fr/starpu/starpu/-/raw/master/codemeta.json",
+			"source": "https://gitlab.inria.fr/starpu/starpu/-/raw/master/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
-    	},
+		},
 		{
-            "source": "https://gitlab.com/eztrace/eztrace/-/raw/master/codemeta.json",
+			"source": "https://gitlab.com/eztrace/eztrace/-/raw/master/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
-    	},
+		},
 		{
-            "source": "https://gitlab.inria.fr/pallas/pallas/-/raw/main/codemeta.json",
+			"source": "https://gitlab.inria.fr/pallas/pallas/-/raw/main/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
-    	},
+		},
+		{
+			"source": "https://raw.githubusercontent.com/hpc-maths/samurai/main/codemeta.json",
+			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
+			"allow": "create"
+		},
 		{
             "source": "https://gitlab.inria.fr/lgouveia/iops/-/raw/main/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
