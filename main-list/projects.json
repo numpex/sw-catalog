@@ -9,13 +9,6 @@
       "name": "Gyselalib++"
     },
     {
-      "description": "Feel++ is an Open-Source C++ library which allows to solve a large range of partial differential equations using Galerkin methods, e.g. finite element method, spectral element method, discontinuous Galerkin methods or reduced basis methods. Feel++ enables parallel computing in a seamless way and allows to solve large scale systems up to tens of thousands of cores.",
-      "discussion": "https://join.slack.com/t/feelpp/shared_invite/zt-2qe0q9hw-4pVbhohCXUE6Po9Ma8dbiQ",
-      "documentation": "https://docs.feelpp.org/home/index.html",
-      "name": "Feel++",
-      "spack_package": "https://github.com/numpex/spack.numpex/blob/main/packages/feelpp/package.py"
-    },
-    {
       "description": "BigDFT is a free software package, whose main program allows the total energy, charge density, and electronic structure of systems made of electrons and nuclei (molecules and periodic/crystalline solids) to be calculated within density functional theory (DFT), using pseudopotentials, and a wavelet basis.",
       "discussion": "https://bigdft.org/index.html%3Fp=41.html",
       "documentation": "https://l_sim.gitlab.io/bigdft-suite/index.html",
