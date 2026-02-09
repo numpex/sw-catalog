@@ -2,6 +2,13 @@
   "$schema": "./projects-schema.json",
   "projects": [
     {
+      "description": "MojitO/S is An Open Source System, Energy and Network Monitoring Tools at the O/S level.",
+      "discussion": "https://github.com/georges-da-costa/mojitOS/issues",
+      "documentation": "https://gitlab.irit.fr/sepia-pub/mojitos",
+      "guix_package": "https://codeberg.org/guix-science/guix-science/src/branch/master/guix-science/packages/performance-monitoring.scm",
+      "name": "MojitO/S"
+    },
+    {
       "description": "Gyselalib++ is a collection of C++ components for writing gyrokinetic semi-lagrangian codes.",
       "discussion": "https://github.com/gyselax/gyselalibxx/issues",
       "documentation": "https://gyselax.github.io/gyselalibxx/",
