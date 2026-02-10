@@ -86,6 +86,13 @@
       "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/melissa/package.py"
     },
     {
+      "description": "MojitO/S is An Open Source System, Energy and Network Monitoring Tools at the O/S level.",
+      "discussion": "https://github.com/georges-da-costa/mojitOS/issues",
+      "documentation": "https://gitlab.irit.fr/sepia-pub/mojitos",
+      "guix_package": "https://codeberg.org/guix-science/guix-science/src/branch/master/guix-science/packages/performance-monitoring.scm",
+      "name": "MojitO/S"
+    },
+    {
       "description": "NewMadeleine is a communication library for high-performance networks. It scales well and supports multi-threaded communication (MPI_THREAD_MULTIPLE). It may be used through its MPI interface or its native interface.",
       "discussion": "https://gitlab.inria.fr/pm2/pm2/-/issues",
       "documentation": "https://pm2.gitlabpages.inria.fr/pm2/nmad/doc/",
