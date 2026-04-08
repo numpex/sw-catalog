@@ -11,6 +11,9 @@ Some NumPEx catalog fields can be populated directly from existing CodeMeta prop
 
 Following these conventions ensures that metadata for NumPEx projects is both human-readable and machine-actionable, while maintaining a consistent and uniform structure of Codemeta file. Standard Codemeta tools can still validate and process the properties they recognize, and the NumPEx catalog importer can interpret `annotatedLink` objects to populate the corresponding catalog fields automatically.
 
+> [!TIP]
+> Our [Codemeta creator](https://numpex.github.io/codemeta-creator/) tool can be used to easily generate Codemeta files adhering to the present convention from a webform.
+
 ## Requirements on Codemeta file
 
 ### 1. Context
