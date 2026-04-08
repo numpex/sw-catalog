@@ -1,8 +1,8 @@
 # NumPEx Software Catalog
 
-This repo centralizes the list of projects following the [NumPEx Software Integration guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html).
+This repo centralizes the list of projects following the [NumPEx Software Integration guidelines](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/guidelines/index.html). Human-readable version of the SW catalog is available on this [website](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/index.html).
 
-Human-readable version of the SW catalog is available on this [website](https://numpex-pc5.gitlabpages.inria.fr/tutorials/projects/index.html).
+**We strongly recommend submitting your software with a codemeta file as described [here](#what-if-you-have-a-codemeta-file-for-your-software-).**
 
 ## How to submit your own software into the SW Catalog ?
 
@@ -28,10 +28,12 @@ Human-readable version of the SW catalog is available on this [website](https://
 > Don't forget to reapply the same process again when some of the fields need to be updated to reflect the latest evolutions of your software !
 > The next section describes a solution that supports automatic updates of your SW Catalog entry without any user intervention.
 
-## What if you already have a Codemeta file for your software ?
+## What if you have a Codemeta file for your software ?
 In case you have already a Codemeta file in your project repo, we offer an easy solution to avoid any duplication or redundant typing, and to enable automatic updates.
 
-The prerequisite is that you ensure your Codemeta file adheres to the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md).  Once this is done, you can proceed with the submission workflow documented above, with the only exception of step 4, which should be replaced by:
+The prerequisite is that you ensure your Codemeta file adheres to the [NumPEx conventions for Codemeta](./documentation/codemeta-mapping.md). if you are not familiar with JSON and codemeta, we recommend using our [Codemeta creator](https://numpex.github.io/codemeta-creator/) tool to easily generate compliant Codemeta file from a simple webform - you just need to copy the generated text in a file named `codemeta.json` at the root of your repo.
+
+Once this is done, you can proceed with the submission workflow documented in the previous section, with the only exception of step 4, which should be replaced by:
 
 4. Update `main-list/mapping.json` in your fork, by adding an entry in the `projects` property for each project you want to include :
 
