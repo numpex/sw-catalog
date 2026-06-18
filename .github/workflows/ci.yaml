@@ -17,6 +17,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  workflow_keepalive:   # This job is a trick to cancel automatic disabling of CI after 60 days without any activity in the repo (Github policy)
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: liskin/gh-workflow-keepalive@v1
+      
   check_and_generate:
     # Do not run on push event in the context of an open PR
     if: ${{ github.event_name != 'push' || github.event.pull_request == null }}
