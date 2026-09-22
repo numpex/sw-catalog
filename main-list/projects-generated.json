@@ -7,7 +7,7 @@
       "documentation": "https://l_sim.gitlab.io/bigdft-suite/index.html",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/chemistry.scm",
       "name": "BigDFT",
-      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/bigdft-suite/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/bigdft_suite/package.py"
     },
     {
       "description": "Chameleon is a dense linear algebra solver relying on sequential task-based algorithms where sub-tasks of the overall algorithms are submitted to a run-time system. Such a system is a layer between the application and the hardware which handles the scheduling and the effective execution of tasks on the processing units. A run-time system such as StarPU is able to manage automatically data transfers between not shared memory area (CPUs-GPUs, distributed nodes).",
@@ -15,7 +15,7 @@
       "documentation": "https://solverstack.gitlabpages.inria.fr/chameleon/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm",
       "name": "Chameleon",
-      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/chameleon/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/chameleon/package.py"
     },
     {
       "name": "Composyx",
@@ -60,7 +60,7 @@
       "documentation": "https://doc.freefem.org/introduction/index.html",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/math.scm",
       "name": "FreeFEM++",
-      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/freefem/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/freefem/package.py"
     },
     {
       "description": "Gyselalib++ is a collection of C++ components for writing gyrokinetic semi-lagrangian codes.",
@@ -89,7 +89,7 @@
       "documentation": "https://melissa.gitlabpages.inria.fr/melissa/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/melissa.scm",
       "name": "Melissa",
-      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/melissa/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/melissa/package.py"
     },
     {
       "description": "MojitO/S is An Open Source System, Energy and Network Monitoring Tools at the O/S level.",
@@ -112,7 +112,7 @@
       "documentation": "https://pdi.dev/main/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/pdi.scm",
       "name": "PDI",
-      "spack_package": "https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/pdi/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/pdi/package.py"
     },
     {
       "description": "PaStiX is a scientific library that provides a high performance parallel solver for very large sparse linear systems based on direct methods. It provides some low-rank compression methods to reduce the memory footprint and/or the time-to-solution.",
