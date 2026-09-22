@@ -286,7 +286,119 @@ def process_project_mapping(proj_cfg, existing_projects, args, repo_root):
             new_entry = {"name": name, **extracted}
             existing_projects.append(new_entry)
 
+# ------------------------------------------------------------
+# Some utitility functions for  URL validation
+# ------------------------------------------------------------
 
+# ------------------------------------------------------------
+# URL validation
+# ------------------------------------------------------------
+def check_url(url, retries=3, backoff=1.7, timeout=10):
+    """
+    Check whether a URL appears to be broken.
+
+    Returns:
+        ("ok", None)       if the URL is reachable
+        ("broken", reason) if the URL clearly does not exist
+        ("unknown", reason) if the URL cannot be reliably checked
+    """
+    last_error = None
+
+    for attempt in range(retries):
+        try:
+            req = Request(
+                url,
+                headers={"User-Agent": "projectmeta-url-checker"},
+            )
+
+            with urlopen(req, timeout=timeout) as resp:
+                if 200 <= resp.status < 400:
+                    return "ok", None
+
+                return "unknown", f"HTTP {resp.status}"
+
+        except HTTPError as e:
+            # Strong evidence that the resource no longer exists.
+            if e.code in (404, 410):
+                return "broken", f"HTTP {e.code} {e.reason}"
+
+            # Do not classify anti-bot, authentication, rate limiting,
+            # or server errors as broken.
+            last_error = f"HTTP {e.code} {e.reason}"
+
+        except URLError as e:
+            last_error = str(e.reason)
+
+        except TimeoutError:
+            last_error = "timeout"
+
+        except Exception as e:
+            last_error = str(e)
+
+        if attempt < retries - 1:
+            wait = backoff ** attempt
+            log(
+                "warn",
+                f"URL check failed for {url}: {last_error}; "
+                f"retrying in {wait:.1f}s..."
+            )
+            time.sleep(wait)
+
+    # Network/server problems are not necessarily evidence of a
+    # broken URL, so leave them as unknown.
+    return "unknown", last_error
+
+
+def check_project_urls(projects_data, schema):
+    """
+    Check all URL fields defined as uriOrArray in the schema.
+
+    Returns:
+        A list of:
+            (project_name, field, url, status, reason)
+    """
+    project_schema = (
+        schema
+        .get("properties", {})
+        .get("projects", {})
+        .get("items", {})
+    )
+
+    url_fields = [
+        name
+        for name, definition
+        in project_schema.get("properties", {}).items()
+        if definition.get("$ref") == "#/$defs/uriOrArray"
+    ]
+
+    results = []
+
+    for project in projects_data.get("projects", []):
+        project_name = project.get("name", "<unnamed>")
+
+        for field in url_fields:
+            value = project.get(field)
+
+            if value is None:
+                continue
+
+            # uriOrArray allows either a single URL or an array.
+            urls = value if isinstance(value, list) else [value]
+
+            for url in urls:
+                log(
+                    "info",
+                    f"Checking URL for project '{project_name}', "
+                    f"field '{field}': {url}"
+                )
+
+                status, reason = check_url(url)
+
+                results.append(
+                    (project_name, field, url, status, reason)
+                )
+
+    return results
 # ------------------------------------------------------------
 # Main
 # ------------------------------------------------------------
@@ -348,6 +460,39 @@ def main():
                 if args.strict:
                     sys.exit(1)
 
+    # Check URL fields are not broken
+    if args.schema and validate and schema:
+        url_results = check_project_urls(projects_data, schema)
+
+        broken = [
+            result
+            for result in url_results
+            if result[3] == "broken"
+        ]
+
+        unknown = [
+            result
+            for result in url_results
+            if result[3] == "unknown"
+        ]
+
+        for project_name, field, url, status, reason in broken:
+            log(
+                "error",
+                f"Broken URL for project '{project_name}', "
+                f"field '{field}': {url} ({reason})"
+            )
+
+        for project_name, field, url, status, reason in unknown:
+            log(
+                "warn",
+                f"Could not verify URL for project '{project_name}', "
+                f"field '{field}': {url} ({reason})"
+            )
+
+        if broken and args.strict:
+            sys.exit(1)
+            
     # Sort projects by name if requested
     if args.sort:
         try:
