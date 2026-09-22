@@ -44,6 +44,9 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+      
+      - name: 🐍 Install Python dependencies
+        run: python -m pip install jsonschema
 
       - name: 0️⃣ Import bunch of metadata from Google sheets (Exa-DoST)
         if: false    # Temporarily disable - work in progress
