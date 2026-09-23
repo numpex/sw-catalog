@@ -67,6 +67,7 @@
       "discussion": "https://github.com/gyselax/gyselalibxx/issues",
       "documentation": "https://gyselax.github.io/gyselalibxx/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/gysela.scm",
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/gyselalibxx/package.py",
       "name": "Gyselalib++"
     },
     {
