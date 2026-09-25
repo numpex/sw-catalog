@@ -49,10 +49,10 @@
     {
       "name": "Feel++",
       "description": "Feel++ is an open-source C++ framework for continuous and discontinuous Galerkin methods (FEM/SEM/DG/HDG) and reduced basis methods for parallel PDE simulation in 1D-3D. It includes toolboxes for multiphysics applications (CFD, CSM, heat transfer, FSI, thermo-electric, Maxwell) and model order reduction components.",
-      "discussion": "https://github.com/feelpp/discussions",
+      "discussion": "https://github.com/orgs/feelpp/discussions",
       "documentation": "https://docs.feelpp.org",
       "guix_package": "https://gitlab.inria.fr/numpex-pc5/wp3/guix-hpc/-/blob/feelpp/guix-hpc/packages/math.scm?ref_type=heads",
-      "spack_package": "https://github.com/numpex/spack.numpex/blob/main/packages/feelpp/package.py"
+      "spack_package": "https://github.com/numpex/spack.numpex/blob/main/spack_repo/numpex/packages/feelpp/package.py"
     },
     {
       "description": "FreeFEM is a popular 2D and 3D partial differential equations (PDE) solver. It allows you to easily implement your own physics modules using the provided FreeFEM language. FreeFEM offers a large list of finite elements, like the Lagrange, Taylor-Hood, etc., usable in the continuous and discontinuous Galerkin method framework.",
