@@ -107,6 +107,7 @@ jobs:
           commit-message: "Regenerate projects catalog via CI"
           add-paths: "main-list"
           branch: ci/generated-projects
+          delete-branch: true
           base: ${{ github.ref_name }}
           title: "Regenerate projects catalog via CI"
           body: "Automatic update of projects_generated.json based on latest Codemeta or source meta data. Please check and merge if appropriate."
