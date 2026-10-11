@@ -82,7 +82,7 @@
       "description": "A generic benchmark orchestration framework for automated parametric experiments.",
       "discussion": "https://gitlab.inria.fr/lgouveia/iops/-/issues",
       "documentation": "https://lgouveia.gitlabpages.inria.fr/iops/",
-      "spack_package": "https://gitlab.inria.fr/lgouveia/iops-spack"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/py_iops_benchmark/package.py"
     },
     {
       "description": "Melissa is a file-avoiding, adaptive, fault-tolerant and elastic framework, to run large-scale sensitivity analysis or deep-surrogate training on supercomputers.",
