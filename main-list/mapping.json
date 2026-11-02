@@ -42,7 +42,7 @@
 			"allow": "create"
 		},
 		{
-			"source": "https://gitlab.com/jcharousset/bigdft-suite/-/raw/devel/codemeta.json",
+			"source": "https://gitlab.inria.fr/numpex-pc5/temporary/pastix/-/raw/master/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
 		}		
