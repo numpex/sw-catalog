@@ -90,7 +90,7 @@
       "documentation": "https://melissa.gitlabpages.inria.fr/melissa/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/melissa.scm",
       "name": "Melissa",
-      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/melissa/package.py"
+      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/py_melissa_online/package.py"
     },
     {
       "description": "MojitO/S is An Open Source System, Energy and Network Monitoring Tools at the O/S level.",
