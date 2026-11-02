@@ -40,6 +40,11 @@
 			"source": "https://raw.githubusercontent.com/deisa-project/deisa-dask/refs/heads/main/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
-		}
+		},
+		{
+			"source": "https://gitlab.com/jcharousset/bigdft-suite/-/raw/devel/codemeta.json",
+			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
+			"allow": "create"
+		}		
     ]
 }
