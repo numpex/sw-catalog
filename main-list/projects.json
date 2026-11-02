@@ -41,14 +41,6 @@
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/pdi/package.py"
     },
     {
-      "description": "Melissa is a file-avoiding, adaptive, fault-tolerant and elastic framework, to run large-scale sensitivity analysis or deep-surrogate training on supercomputers.",
-      "discussion": "https://melissa.discourse.group/",
-      "documentation": "https://melissa.gitlabpages.inria.fr/melissa/",
-      "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/melissa.scm",
-      "name": "Melissa",
-      "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/py_melissa_online/package.py"
-    },
-    {
       "description": "FreeFEM is a popular 2D and 3D partial differential equations (PDE) solver. It allows you to easily implement your own physics modules using the provided FreeFEM language. FreeFEM offers a large list of finite elements, like the Lagrange, Taylor-Hood, etc., usable in the continuous and discontinuous Galerkin method framework.",
       "discussion": "https://community.freefem.org/",
       "documentation": "https://doc.freefem.org/introduction/index.html",
