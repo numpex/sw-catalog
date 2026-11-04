@@ -41,10 +41,15 @@
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
 		},
-		{
-			"source": "https://gitlab.inria.fr/solverstack/pastix/-/raw/master/codemeta.json",
+    {
+    	"source": "https://gitlab.inria.fr/solverstack/pastix/-/raw/master/codemeta.json",
 			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
 			"allow": "create"
-		}		
-    ]
+		},
+		{
+			"source": "https://gitlab.inria.fr/melissa/melissa/-/raw/develop/codemeta.json",
+			"mappingRef": "https://numpex.github.io/sw-catalog/mappings/codemeta-v2-v3.json",
+			"allow": "create"
+		}
+	]
 }
