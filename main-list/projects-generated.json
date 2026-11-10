@@ -86,7 +86,7 @@
     },
     {
       "name": "Melissa",
-      "description": "Melissa is a file-avoiding, fault-tolerant, and elastic framework designed for large-scale sensitivity analysis and large-scale deep surrogate training on supercomputers.",
+      "description": "Melissa is a file-avoiding, fault-tolerant, and elastic framework designed for large-scale deep surrogate training on supercomputers.",
       "discussion": "https://melissa.discourse.group/",
       "documentation": "https://melissa.gitlabpages.inria.fr/melissa",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/melissa.scm",
