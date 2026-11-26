@@ -119,7 +119,7 @@
       "name": "PaStiX",
       "description": "PaStiX is a sparse direct solver",
       "discussion": "https://gitlab.inria.fr/solverstack/pastix/-/issues",
-      "documentation": "https://solverstack.gitlabpages.inria.fr/pastix/index.html",
+      "documentation": "https://solverstack.gitlabpages.inria.fr/pastix/",
       "guix_package": "https://gitlab.inria.fr/guix-hpc/guix-hpc/-/blob/master/guix-hpc/packages/solverstack.scm",
       "spack_package": "https://github.com/spack/spack-packages/blob/develop/repos/spack_repo/builtin/packages/pastix/package.py"
     },
